@@ -1,5 +1,6 @@
 /* CSS:n luomisessa on käytetty ChatGPT:tä */
 
+/**/
 .styled-input {
     width: 90%;
     max-width: 600px;
@@ -10,13 +11,22 @@
     border-radius: 5px;
 }
 
+/**/
 input.styled-input {
     max-width: 200px;
     height: 25px;
 }
 
+/**/
 label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
+}
+
+/*Virheviestin muotoilu*/
+.error-message {
+    color: red;
+    margin-top: 5px;
+    display: block;
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table (name="Npc")
@@ -14,6 +16,8 @@ public class Npc {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long npcId;
 	
+	@Size(min=1, max=250, message="Field is between 1-250 characters.")
+	@NotEmpty(message="NPC needs a name.")
 	private String npcName;
 	
 	private String npcNotes;
