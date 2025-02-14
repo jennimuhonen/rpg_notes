@@ -11,14 +11,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.validation.Valid;
 import project.rpg_notes.domain.Npc;
 import project.rpg_notes.domain.NpcRepository;
+import project.rpg_notes.domain.PlaceRepository;
 
 @Controller
 public class RpgNotesController {
 	
 	private NpcRepository npcRepository;
 	
-	public RpgNotesController(NpcRepository npcRepository) {
+	private PlaceRepository placeRepository;
+	
+	
+
+	public RpgNotesController(NpcRepository npcRepository, PlaceRepository placeRepository) {
 		this.npcRepository = npcRepository;
+		this.placeRepository = placeRepository;
 	}
 
 	@GetMapping({"/", "/index"})
@@ -35,7 +41,7 @@ public class RpgNotesController {
 	public String showNpcList(Model model) {
 		System.out.println("List of NPCs");
 		model.addAttribute("npc", npcRepository.findAll());
-		//model.addAttribute("xxx", xxxRepository.findAll());
+		model.addAttribute("places", placeRepository.findAll());
 		return "npcList";
 	}
 	
@@ -44,7 +50,7 @@ public class RpgNotesController {
 	public String addNpc(Model model) {
 		System.out.println("You can now add NPC.");
 		model.addAttribute("npc", new Npc());
-		//model.addAttribute("xxx", xxxRepository.findAll());
+		model.addAttribute("places", placeRepository.findAll());
 		return "addNpc";
 	}
 	
@@ -53,7 +59,7 @@ public class RpgNotesController {
 	public String saveNpc(@Valid @ModelAttribute("npc") Npc npc, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("addNpc", npc);
-			//model.addAttribute("xxx", xxxRepository.findAll());
+			model.addAttribute("places", placeRepository.findAll());
 			System.out.println("Saving new NPC failed: " + npc);
 			return "addNpc";
 		}

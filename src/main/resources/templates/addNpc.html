@@ -21,6 +21,13 @@
 			
 			<div style="clear: both; display: block; height: 10px;"></div>
 			
+			<label for="place">Place</label>
+			<select th:field="*{place}" class="styled-input">
+				<option value="">(No Place)</option>
+       			<option th:each="place: ${places}" th:value="${place.placeId}" th:text="${place.placeName}"></option>
+    		</select>
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
 			<label for="npcNotes">Notes</label>
 			<textarea th:field="*{npcNotes}" class="styled-input"></textarea>
 			<div style="clear: both; display: block; height: 10px;"></div>
