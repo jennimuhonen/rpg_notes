@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -28,10 +29,14 @@ public class Place {
 	
 	private String placeNotes;
 	
-	//One place and many NPCs
+	//One Place and many NPCs
 	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="place")
-	private List<Npc> Npcs;
+	private List<Npc> npcs;
+	
+	//Many Places and many Keywords
+	@ManyToMany(mappedBy = "places")
+	private List<Keyw> keywords;
 
 	public Place() {	
 	}
@@ -45,7 +50,15 @@ public class Place {
 		this.placeId = placeId;
 		this.placeName = placeName;
 		this.placeNotes = placeNotes;
-		Npcs = npcs;
+		this.npcs = npcs;
+	}
+
+	public Place(long placeId, String placeName, String placeNotes, List<Npc> npcs, List<Keyw> keywords) {
+		this.placeId = placeId;
+		this.placeName = placeName;
+		this.placeNotes = placeNotes;
+		this.npcs = npcs;
+		this.keywords = keywords;
 	}
 
 	public long getPlaceId() {
@@ -73,11 +86,19 @@ public class Place {
 	}
 
 	public List<Npc> getNpcs() {
-		return Npcs;
+		return npcs;
 	}
 
 	public void setNpcs(List<Npc> npcs) {
-		Npcs = npcs;
+		this.npcs = npcs;
+	}
+
+	public List<Keyw> getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(List<Keyw> keywords) {
+		this.keywords = keywords;
 	}
 
 	@Override

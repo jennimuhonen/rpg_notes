@@ -1,10 +1,13 @@
 package project.rpg_notes.domain;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,8 +29,11 @@ public class Npc {
 	
 	//Many Npcs in one place
 	@ManyToOne
-	@JoinColumn(name="placeId", nullable = true)
+	@JoinColumn(name="placeId")
 	private Place place;
+	
+	@ManyToMany(mappedBy = "npcs")
+	private List<Keyw> keywords;
 	
 	public Npc() {	
 	}
