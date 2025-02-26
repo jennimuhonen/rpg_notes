@@ -2,6 +2,9 @@ package project.rpg_notes.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -25,36 +29,51 @@ public class Npc {
 	@NotEmpty(message="NPC needs a name.")
 	private String npcName;
 	
-	private String npcNotes;
+	private String npcDescription;
 	
-	//Many Npcs in one place
+	//Many Npcs and one Place
 	@ManyToOne
 	@JoinColumn(name="placeId")
 	private Place place;
 	
+	//One Npc and many Notes
+	@JsonIgnore
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="npc")
+	private List<Note> notes;
+	
+	//Many Npcs many Keywords
 	@ManyToMany(mappedBy = "npcs")
 	private List<Keyw> keywords;
 	
 	public Npc() {	
 	}
 	
-	public Npc(String npcName, String npcNotes, Place place) {
+	public Npc(String npcName, String npcDescription, Place place) {
 		this.npcName = npcName;
-		this.npcNotes = npcNotes;
+		this.npcDescription = npcDescription;
 		this.place = place;
 	}
 
-	public Npc(long npcId, String npcName, String npcNotes) {
+	public Npc(long npcId, String npcName, String npcDescription) {
 		this.npcId = npcId;
 		this.npcName = npcName;
-		this.npcNotes = npcNotes;
+		this.npcDescription = npcDescription;
 	}
 
-	public Npc(long npcId, String npcName, String npcNotes, Place place) {
+	public Npc(long npcId, String npcName, String npcDescription, Place place) {
 		this.npcId = npcId;
 		this.npcName = npcName;
-		this.npcNotes = npcNotes;
+		this.npcDescription = npcDescription;
 		this.place = place;
+	}
+	
+	public Npc(long npcId, String npcName, String npcDescription, Place place, List<Note> notes, List<Keyw> keywords) {
+		this.npcId = npcId;
+		this.npcName = npcName;
+		this.npcDescription = npcDescription;
+		this.place = place;
+		this.notes = notes;
+		this.keywords = keywords;
 	}
 
 	public long getNpcId() {
@@ -73,12 +92,12 @@ public class Npc {
 		this.npcName = npcName;
 	}
 
-	public String getNpcNotes() {
-		return npcNotes;
+	public String getNpcDescription() {
+		return npcDescription;
 	}
 
-	public void setNpcNotes(String npcNotes) {
-		this.npcNotes = npcNotes;
+	public void setNpcDescription(String npcDescription) {
+		this.npcDescription = npcDescription;
 	}
 
 	public Place getPlace() {
@@ -89,9 +108,25 @@ public class Npc {
 		this.place = place;
 	}
 
+	public List<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
+	}
+
+	public List<Keyw> getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(List<Keyw> keywords) {
+		this.keywords = keywords;
+	}
+
 	@Override
 	public String toString() {
-		return "Npc [npcId=" + npcId + ", npcName=" + npcName + ", npcNotes=" + npcNotes + ", place=" + place + "]";
+		return "Npc [npcId=" + npcId + ", npcName=" + npcName + ", npcDescription=" + npcDescription + ", place=" + place + "]";
 	}
 
 }

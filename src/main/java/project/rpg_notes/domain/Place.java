@@ -27,12 +27,17 @@ public class Place {
 	@NotEmpty(message="Place needs a name.")
 	private String placeName;
 	
-	private String placeNotes;
+	private String placeDescription;
 	
 	//One Place and many NPCs
 	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="place")
 	private List<Npc> npcs;
+	
+	//One Place and many Notes
+	@JsonIgnore
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="place")
+	private List<Note> notes;
 	
 	//Many Places and many Keywords
 	@ManyToMany(mappedBy = "places")
@@ -41,22 +46,22 @@ public class Place {
 	public Place() {	
 	}
 	
-	public Place(String placeName, String placeNotes) {
+	public Place(String placeName, String placeDescription) {
 		this.placeName = placeName;
-		this.placeNotes = placeNotes;
+		this.placeDescription = placeDescription;
 	}
 
-	public Place(long placeId, String placeName, String placeNotes, List<Npc> npcs) {
+	public Place(long placeId, String placeName, String placeDescription, List<Npc> npcs) {
 		this.placeId = placeId;
 		this.placeName = placeName;
-		this.placeNotes = placeNotes;
+		this.placeDescription = placeDescription;
 		this.npcs = npcs;
 	}
 
-	public Place(long placeId, String placeName, String placeNotes, List<Npc> npcs, List<Keyw> keywords) {
+	public Place(long placeId, String placeName, String placeDescription, List<Npc> npcs, List<Keyw> keywords) {
 		this.placeId = placeId;
 		this.placeName = placeName;
-		this.placeNotes = placeNotes;
+		this.placeDescription = placeDescription;
 		this.npcs = npcs;
 		this.keywords = keywords;
 	}
@@ -77,12 +82,12 @@ public class Place {
 		this.placeName = placeName;
 	}
 
-	public String getPlaceNotes() {
-		return placeNotes;
+	public String getPlaceDescription() {
+		return placeDescription;
 	}
 
-	public void setPlaceNotes(String placeNotes) {
-		this.placeNotes = placeNotes;
+	public void setPlaceDescription(String placeDescription) {
+		this.placeDescription = placeDescription;
 	}
 
 	public List<Npc> getNpcs() {
@@ -101,9 +106,17 @@ public class Place {
 		this.keywords = keywords;
 	}
 
+	public List<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
+	}
+
 	@Override
 	public String toString() {
-		return "Place [placeId=" + placeId + ", placeName=" + placeName + ", placeNotes=" + placeNotes + "]";
+		return "Place [placeId=" + placeId + ", placeName=" + placeName + ", placeDescription=" + placeDescription + "]";
 	}	
 
 }

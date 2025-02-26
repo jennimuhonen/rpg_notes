@@ -15,7 +15,9 @@
 		<th>Id</th>
 		<th>Name</th>
 		<th>Place</th>
-		<th>Notes</th>
+		<th>Description</th>
+		<th>Delete</th>
+		<th>Edit</th>
 	</tr>	
 	<tr th:each="npc : ${npc}">
 		<td th:text="${npc.npcId}"></td>
@@ -24,13 +26,13 @@
 		<!-- ChatGPT: Ongelma johtuu siitä, että kun NPC:llä ei ole valittua paikkaa, npc.place on null ja Thymeleaf yrittää silti lukea npc.place.placeName, mikä aiheuttaa virheen. -->
 		<!-- ChatGPT: Tämä [alla oleva viilattu koodi] varmistaa, että jos paikkaa ei ole valittu, solu on tyhjä eikä virhettä synny. -->
 		<td th:text="${npc.place != null ? npc.place.placeName : ''}"></td>
-		<td th:text="${npc.npcNotes}"></td>
-		<td><a th:href="@{/delete/{id}(id=${npc.npcId})}" onclick="return confirm('Are you sure you want to delete this NPC?');" class="btn btn-danger" >Delete</a></td>
-		<td><a th:href="@{/edit/{id}(id=${npc.npcId})}" class="btn btn-success">Edit</a></td>
+		<td th:text="${npc.npcDescription}"></td>
+		<td><a th:href="@{/npc/delete/{id}(id=${npc.npcId})}" onclick="return confirm('Are you sure you want to delete this NPC?');" class="btn btn-danger" >Delete</a></td>
+		<td><a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" class="btn btn-success">Edit</a></td>
 	</tr>	
 </table>
 <br>
-<a href="/addnpc" class="btn btn-success">Add new NPC</a>
+<a href="/npc/addnpc" class="btn btn-success">Add new NPC</a>
 	
 </body>
 </html>

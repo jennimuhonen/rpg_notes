@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Npc Information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Npc Information</h1>
+
+		<div th:object="${npc}">
+
+    		<label>Name:</label>
+    		<span th:text="*{npcName}"></span>
+    
+    		<div style="clear: both; display: block; height: 10px;"></div>
+    
+    		<label>Place:</label>
+   			<span th:text="*{place?.placeName}">(No Place)</span>
+    
+   			<div style="clear: both; display: block; height: 10px;"></div>
+    
+    		<label>Description:</label>
+    		<span th:text="*{npcDescription}"></span>
+    		
+    		<div style="clear: both; display: block; height: 10px;"></div>
+    		
+    		<label>Notes:</label>
+    		<div th:each="note : *{notes}" class="note-item">
+   				<p th:text="${note.noteContent}"></p>
+			</div>	
+    		
+		</div>
+		
+</body>
+
+</html>
