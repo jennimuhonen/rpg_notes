@@ -67,6 +67,13 @@ public class Npc {
 		this.place = place;
 	}
 	
+	public Npc(String npcName, String npcDescription, Place place, List<Keyw> keywords) {
+		this.npcName = npcName;
+		this.npcDescription = npcDescription;
+		this.place = place;
+		this.keywords = keywords;
+	}
+	
 	public Npc(long npcId, String npcName, String npcDescription, Place place, List<Note> notes, List<Keyw> keywords) {
 		this.npcId = npcId;
 		this.npcName = npcName;

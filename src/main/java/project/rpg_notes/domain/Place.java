@@ -57,6 +57,12 @@ public class Place {
 		this.placeDescription = placeDescription;
 		this.npcs = npcs;
 	}
+	
+	public Place(String placeName, String placeDescription, List<Keyw> keywords) {
+		this.placeName = placeName;
+		this.placeDescription = placeDescription;
+		this.keywords = keywords;
+	}
 
 	public Place(long placeId, String placeName, String placeDescription, List<Npc> npcs, List<Keyw> keywords) {
 		this.placeId = placeId;

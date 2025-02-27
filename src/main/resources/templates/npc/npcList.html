@@ -21,7 +21,7 @@
 	</tr>	
 	<tr th:each="npc : ${npc}">
 		<td th:text="${npc.npcId}"></td>
-		<td th:text="${npc.npcName}"></td>
+		<td> <a th:href="@{/npc/{id}(id=${npc.npcId})}" th:text="${npc.npcName}" th:title="'Get more information about ' + ${npc.npcName} + ' and add notes'"></a></td>
 		<!-- Ohjelma meni solmuun, jos paikan jätti tyhjäksi. -->
 		<!-- ChatGPT: Ongelma johtuu siitä, että kun NPC:llä ei ole valittua paikkaa, npc.place on null ja Thymeleaf yrittää silti lukea npc.place.placeName, mikä aiheuttaa virheen. -->
 		<!-- ChatGPT: Tämä [alla oleva viilattu koodi] varmistaa, että jos paikkaa ei ole valittu, solu on tyhjä eikä virhettä synny. -->

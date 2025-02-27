@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Add Note</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Add Note</h1>
+	
+	<form action="#" th:action="@{/note/savenote}" th:object="${note}" method="post">	
+		<div>
+			<div>You can choose either Npc or Place but not both.</div>
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<!-- JavaScriptiä hyödyntävä ratkaisu vain yhden valinnan mahdollisuuteen on saatu ChatGPT:ltä. -->
+			
+			<label for="npc">Npc</label>
+			<select id="npcSelect" th:field="*{npc}" class="styled-input" onchange="clearPlace()">
+				<option value="">(No Npc)</option>
+       			<option th:each="npc: ${npcs}" th:value="${npc.npcId}" th:text="${npc.npcName}"></option>
+    		</select>
+			<div style="clear: both; display: block; height: 10px;"></div>
+		
+			<label for="place">Place</label>
+			<select id="placeSelect" th:field="*{place}" class="styled-input" onchange="clearNpc()">
+				<option value="">(No Place)</option>
+       			<option th:each="place: ${places}" th:value="${place.placeId}" th:text="${place.placeName}"></option>
+    		</select>
+    		
+    		<script>
+    			function clearPlace() {
+        		document.getElementById("placeSelect").value = "";
+    			}
+
+    			function clearNpc() {
+        		document.getElementById("npcSelect").value = "";
+    			}
+			</script>
+    		
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<label for="noteContent">Note</label>
+			<textarea th:field="*{noteContent}" class="styled-input"></textarea>
+			<div th:if="${#fields.hasErrors('noteContent')}" class="error-message">
+				<span th:errors="*{noteContent}">Error</span>
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+		</div>
+		<input type="submit" value="Add" />
+
+	</form>
+
+</body>
+
+</html>

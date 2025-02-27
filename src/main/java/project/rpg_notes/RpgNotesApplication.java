@@ -5,6 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import project.rpg_notes.domain.Keyw;
+import project.rpg_notes.domain.KeywRepository;
 import project.rpg_notes.domain.Note;
 import project.rpg_notes.domain.NoteRepository;
 import project.rpg_notes.domain.Npc;
@@ -22,11 +24,21 @@ public class RpgNotesApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner rpgData(NpcRepository npcRepository, PlaceRepository pRepository, NoteRepository nRepository) {
+	public CommandLineRunner rpgData(NpcRepository npcRepository, PlaceRepository pRepository, NoteRepository nRepository, KeywRepository kRepository) {
 		return (args) -> {
 			
+			System.out.println("Adding some keywords (tags)");
+			kRepository.save(new Keyw("Musta laiva"));
+			kRepository.save(new Keyw("Piraatti"));
+			kRepository.save(new Keyw("Epäilyttävä!"));
+			
+			System.out.println("-- Print keywords --");
+			for (Keyw keyword : kRepository.findAll()) {
+				System.out.println(keyword.toString());
+			}
+			
 			System.out.println("Adding places to database");
-			pRepository.save(new Place("Hurjaportti", "Kahlerannikon siirtokunnan pääkaupunki."));
+			pRepository.save(new Place("Hurjaportti", "Kahlerannikon siirtokunnan pääkaupunki.", kRepository.findByKeyword("Epäilyttävä")));
 			pRepository.save(new Place("Motaku", "Saariston suurin saari"));
 			
 			System.out.println("-- Print places --");
@@ -35,9 +47,9 @@ public class RpgNotesApplication {
 			}
 						
 			System.out.println("Adding npcs");
-			npcRepository.save(new Npc("Ilkeä Piraatti", "Mustan laivan kapteeni", pRepository.findByPlaceName("Hurjaportti").get(0)));
-			npcRepository.save(new Npc("Surkea Piraatti", "Mustan laivan perämies", pRepository.findByPlaceName("Hurjaportti").get(0)));
-			npcRepository.save(new Npc("Hiljainen Metsästäjä", "Samoaa Chenoggin viidakossa", pRepository.findByPlaceName("Motaku").get(0)));
+			npcRepository.save(new Npc("Ilkeä Piraatti", "Mustan laivan kapteeni", pRepository.findByPlaceName("Hurjaportti").get(0), kRepository.findByKeyword("Piraatti")));
+			npcRepository.save(new Npc("Surkea Piraatti", "Mustan laivan perämies", pRepository.findByPlaceName("Hurjaportti").get(0), kRepository.findByKeyword("Piraatti")));
+			npcRepository.save(new Npc("Hiljainen Metsästäjä", "Samoaa Chenoggin viidakossa", pRepository.findByPlaceName("Motaku").get(0), kRepository.findByKeyword("Epäilyttävä")));
 			npcRepository.save(new Npc("Onnellinen Kokki", "Sillisalaatti-tavernan kokki", pRepository.findByPlaceName("Motaku").get(0)));
 			
 			System.out.println("-- Print NPCs --");

@@ -46,9 +46,20 @@ public class Keyw {
 		
 	}
 
+	public Keyw(String keyword) {
+		this.keyword = keyword;
+	}
+
 	public Keyw(long keywordId, String keyword) {
 		this.keywordId = keywordId;
 		this.keyword = keyword;
+	}
+
+	public Keyw(String keyword, List<Npc> npcs, List<Place> places) {
+		super();
+		this.keyword = keyword;
+		this.npcs = npcs;
+		this.places = places;
 	}
 
 	public Keyw(long keywordId, String keyword, List<Npc> npcs, List<Place> places) {

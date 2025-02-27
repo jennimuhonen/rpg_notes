@@ -22,12 +22,12 @@ public class Note {
 	
 	//Many Notes, one Npc
 	@ManyToOne
-	@JoinColumn(name="npcId")
+	@JoinColumn(name="npcId", nullable=true)
 	private Npc npc;
 	
 	//Many Notes, one Place
 	@ManyToOne
-	@JoinColumn(name="placeId")
+	@JoinColumn(name="placeId", nullable=true)
 	private Place place;
 
 	public Note() {
@@ -53,6 +53,19 @@ public class Note {
 	public Note(long notesId, String noteContent, Place place) {
 		this.notesId = notesId;
 		this.noteContent = noteContent;
+		this.place = place;
+	}
+
+	public Note(String noteContent, Npc npc, Place place) {
+		this.noteContent = noteContent;
+		this.npc = npc;
+		this.place = place;
+	}
+
+	public Note(long notesId, String noteContent, Npc npc, Place place) {
+		this.notesId = notesId;
+		this.noteContent = noteContent;
+		this.npc = npc;
 		this.place = place;
 	}
 
