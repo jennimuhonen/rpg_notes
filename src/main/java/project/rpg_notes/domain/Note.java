@@ -15,7 +15,7 @@ public class Note {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long notesId;
+	private long noteId;
 	
 	@NotEmpty(message="An empty box is not a note.")
 	private String noteContent;
@@ -39,8 +39,8 @@ public class Note {
 		this.npc = npc;
 	}
 
-	public Note(long notesId, String noteContent, Npc npc) {
-		this.notesId = notesId;
+	public Note(long noteId, String noteContent, Npc npc) {
+		this.noteId = noteId;
 		this.noteContent = noteContent;
 		this.npc = npc;
 	}
@@ -50,8 +50,8 @@ public class Note {
 		this.place = place;
 	}
 
-	public Note(long notesId, String noteContent, Place place) {
-		this.notesId = notesId;
+	public Note(long noteId, String noteContent, Place place) {
+		this.noteId = noteId;
 		this.noteContent = noteContent;
 		this.place = place;
 	}
@@ -62,19 +62,19 @@ public class Note {
 		this.place = place;
 	}
 
-	public Note(long notesId, String noteContent, Npc npc, Place place) {
-		this.notesId = notesId;
+	public Note(long noteId, String noteContent, Npc npc, Place place) {
+		this.noteId = noteId;
 		this.noteContent = noteContent;
 		this.npc = npc;
 		this.place = place;
 	}
 
-	public long getNotesId() {
-		return notesId;
+	public long getNoteId() {
+		return noteId;
 	}
 
-	public void setNotesId(long notesId) {
-		this.notesId = notesId;
+	public void setNoteId(long noteId) {
+		this.noteId = noteId;
 	}
 
 	public String getNoteContent() {
@@ -103,7 +103,7 @@ public class Note {
 
 	@Override
 	public String toString() {
-		return "Note [notesId=" + notesId + ", noteContent=" + noteContent + ", npc=" + npc + ", place=" + place + "]";
+		return "Note [noteId=" + noteId + ", noteContent=" + noteContent + ", npc=" + npc + ", place=" + place + "]";
 	}
 	
 	

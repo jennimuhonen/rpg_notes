@@ -59,6 +59,19 @@ tr:nth-child(even) {
     border-color: #888;
 }
 
+.small-button {
+    font-size: 0.7em;
+    color: gray;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.small-button:hover {
+    color: red; /* Korostus hoveroidessa */
+}
 
 /* Lomakkeiden muotoilu */
 .styled-input {
@@ -69,6 +82,23 @@ tr:nth-child(even) {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+/* Muistiinpanojen muotoilu */
+.note-item p {
+    margin: 0;
+}
+
+.note-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.note-text {
+    display: inline-block;
+    margin-right: 10px;
 }
 
 /* Pienemmän syötekentät ja valintalista (mm. nimi, paikka) */

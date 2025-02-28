@@ -81,10 +81,10 @@ public class NpcController {
 		}
 		npcRepository.save(npc);
 		System.out.println("Edited NPC saved: " + npc);
-		return "redirect:/npc/npclist";
+		return "redirect:/npc/"+npc.getNpcId();
 	}
 
-	// 6. Delete NPC + are you sure
+	// 6. Delete NPC
 	@GetMapping(value = "/npc/delete/{id}")
 	public String deleteNpc(@PathVariable("id") Long npcId) {
 		npcRepository.deleteById(npcId);

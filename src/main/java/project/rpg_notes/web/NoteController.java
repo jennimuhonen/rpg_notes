@@ -5,12 +5,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
 import project.rpg_notes.domain.Note;
 import project.rpg_notes.domain.NoteRepository;
+import project.rpg_notes.domain.Npc;
 import project.rpg_notes.domain.NpcRepository;
+import project.rpg_notes.domain.Place;
 import project.rpg_notes.domain.PlaceRepository;
 
 @Controller
@@ -52,8 +55,62 @@ public class NoteController {
 		}
 		System.out.println("New note saved: " + note);
 		noteRepository.save(note);
-		return "redirect:/npc/npclist";
+		if(note.getNpc()==null) {
+			Long id=note.getPlace().getPlaceId();
+			return "redirect:/place/"+id;
+		} else {
+			Long id=note.getNpc().getNpcId();
+			return "redirect:/npc/"+id;
+		}
 	}
 	
+	//3. Edit Note
+	@GetMapping(value="note/edit/{id}")
+	public String editNote(@PathVariable("id") Long noteId, Model model) {
+		System.out.println("Edit note");
+		model.addAttribute("note", noteRepository.findById(noteId).orElse(null)); //Sivulle lisätyn delete-nappulan kanssa oli ongelmia, ChatGPT kehotti lisäämään orElse(null), joka ratkaisi ongelman. 
+		model.addAttribute("places", placeRepository.findAll());
+		model.addAttribute("npcs", npcRepository.findAll());
+		System.out.println("Open editpage of note: " + noteId);
+		return "note/editNote";
+	}
+	
+	//4. Save edited Note
+	@PostMapping("/note/saveeditednote")
+	public String saveEditedNote(@Valid @ModelAttribute("note") Note note, BindingResult bindingResult, Model model) {
+		if(bindingResult.hasErrors()) {
+			System.out.println("Failed to edit Note: "+ note);
+			model.addAttribute("note", note);
+			model.addAttribute("places", placeRepository.findAll());
+			model.addAttribute("npcs", npcRepository.findAll());
+			return "note/editNote";
+		}
+		System.out.println("Edited Note saved");
+		noteRepository.save(note);
+		if(note.getNpc()==null) {
+			Long id=note.getPlace().getPlaceId();
+			return "redirect:/place/"+id;
+		} else {
+			Long id=note.getNpc().getNpcId();
+			return "redirect:/npc/"+id;
+		}
+	}
+	
+	//5. Delete Note
+	@GetMapping(value="/note/delete/{id}")
+	public String deleteNote(@PathVariable("id") Long noteId, Model model) {
+		Note note = noteRepository.findById(noteId).orElse(null);
+		Npc npc = note.getNpc();
+		Place place = note.getPlace();
+		System.out.println("Delete note with id:" + noteId);
+		noteRepository.deleteById(noteId);
+		if(npc==null) {
+			Long id=place.getPlaceId();
+			return "redirect:/place/"+id;
+		} else {
+			Long id=npc.getNpcId();
+			return "redirect:/npc/"+id;
+		}
+	}
 
 }
