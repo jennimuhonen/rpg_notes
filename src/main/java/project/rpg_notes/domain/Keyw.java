@@ -24,7 +24,7 @@ public class Keyw {
 	
 	@Size(min=1, max=250, message="Field is between 1-250 characters.")
 	@NotEmpty(message="What your keyword is?")
-	private String keyword;
+	private String keywordName;
 	
 	@ManyToMany //source material: https://www.baeldung.com/jpa-many-to-many
 	@JoinTable(
@@ -46,25 +46,24 @@ public class Keyw {
 		
 	}
 
-	public Keyw(String keyword) {
-		this.keyword = keyword;
+	public Keyw(String keywordName) {
+		this.keywordName = keywordName;
 	}
 
-	public Keyw(long keywordId, String keyword) {
+	public Keyw(long keywordId, String keywordName) {
 		this.keywordId = keywordId;
-		this.keyword = keyword;
+		this.keywordName = keywordName;
 	}
 
-	public Keyw(String keyword, List<Npc> npcs, List<Place> places) {
-		super();
-		this.keyword = keyword;
+	public Keyw(String keywordName, List<Npc> npcs, List<Place> places) {
+		this.keywordName = keywordName;
 		this.npcs = npcs;
 		this.places = places;
 	}
 
-	public Keyw(long keywordId, String keyword, List<Npc> npcs, List<Place> places) {
+	public Keyw(long keywordId, String keywordName, List<Npc> npcs, List<Place> places) {
 		this.keywordId = keywordId;
-		this.keyword = keyword;
+		this.keywordName = keywordName;
 		this.npcs = npcs;
 		this.places = places;
 	}
@@ -78,11 +77,11 @@ public class Keyw {
 	}
 
 	public String getKeywordName() {
-		return keyword;
+		return keywordName;
 	}
 
-	public void setKeywordName(String keyword) {
-		this.keyword = keyword;
+	public void setKeywordName(String keywordName) {
+		this.keywordName = keywordName;
 	}
 
 	public List<Npc> getNpcs() {
@@ -103,7 +102,7 @@ public class Keyw {
 
 	@Override
 	public String toString() {
-		return "Keyword [keywordId=" + keywordId + ", keyword=" + keyword + "]";
+		return "Keyword [keywordId=" + keywordId + ", keywordName=" + keywordName + "]";
 	}
 
 }

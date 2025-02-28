@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface KeywRepository extends CrudRepository<Keyw, Long> {
 	
-	List<Keyw> findByKeyword(String keyword);
+	List<Keyw> findByKeywordName(String keyword);
 
 }

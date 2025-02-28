@@ -3,7 +3,6 @@ package project.rpg_notes;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -42,7 +41,7 @@ public class RpgNotesApplication {
 			}
 			
 			System.out.println("Adding places to database");
-			pRepository.save(new Place("Hurjaportti", "Kahlerannikon siirtokunnan pääkaupunki.", kRepository.findByKeyword("Epäilyttävä!")));
+			pRepository.save(new Place("Hurjaportti", "Kahlerannikon siirtokunnan pääkaupunki.", kRepository.findByKeywordName("Epäilyttävä!")));
 			pRepository.save(new Place("Motaku", "Saariston suurin saari"));
 			
 			System.out.println("-- Print places --");
@@ -51,13 +50,13 @@ public class RpgNotesApplication {
 			}
 			
 			List<Keyw> kList = new ArrayList<>();
-			kList.addAll(kRepository.findByKeyword("Musta laiva"));
-			kList.addAll(kRepository.findByKeyword("Piraatti"));
+			kList.addAll(kRepository.findByKeywordName("Musta laiva"));
+			kList.addAll(kRepository.findByKeywordName("Piraatti"));
 						
 			System.out.println("Adding npcs");
 			npcRepository.save(new Npc("Ilkeä Piraatti", "Mustan laivan kapteeni", pRepository.findByPlaceName("Hurjaportti").get(0), kList));
 			npcRepository.save(new Npc("Surkea Piraatti", "Mustan laivan perämies", pRepository.findByPlaceName("Hurjaportti").get(0), kList));
-			npcRepository.save(new Npc("Hiljainen Metsästäjä", "Samoaa Chenoggin viidakossa", pRepository.findByPlaceName("Motaku").get(0), kRepository.findByKeyword("Epäilyttävä!")));
+			npcRepository.save(new Npc("Hiljainen Metsästäjä", "Samoaa Chenoggin viidakossa", pRepository.findByPlaceName("Motaku").get(0), kRepository.findByKeywordName("Epäilyttävä!")));
 			npcRepository.save(new Npc("Onnellinen Kokki", "Sillisalaatti-tavernan kokki", pRepository.findByPlaceName("Motaku").get(0)));
 			
 			System.out.println("-- Print NPCs --");

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Add Keyword</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Add Keyword</h1>
+	
+	<form action="#" th:action="@{/keyword/savekeyword}" th:object="${keyword}" method="post">	
+		<div>
+			<input type="text" th:field="*{keywordName}" class="styled-input" />
+			
+			<div th:if="${#fields.hasErrors('keywordName')}" class="error-message">
+				<span th:errors="*{keywordName}">Error</span>
+			</div>
+			
+			<div th:if="${errorMessage}" class="error-message">
+    			<p th:text="${errorMessage}"></p>
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+		</div>
+		<input type="submit" value="Add" />
+
+	</form>
+
+</body>
+
+</html>
