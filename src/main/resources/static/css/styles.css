@@ -109,6 +109,16 @@ input.styled-input, select.styled-input {
     padding: 5px;
 }
 
+select.styled-input[multiple] {
+    height: auto; /* Sallii dynaamisen korkeuden */
+    min-height: 120px; /* Minimipituus */
+    max-height: 300px; /* Maksimipituus (tarvittaessa) */
+    overflow-y: auto; /* Lisää pystysuuntainen vieritys */
+    width: 220px; /* Vähän enemmän tilaa */
+    font-size: 16px;
+    padding: 5px;
+}
+
 /* Labelien tyyli */
 label {
     display: block;
@@ -122,3 +132,7 @@ label {
     font-size: 14px;
 }
 
+/*Piilota mitä käyttäjän ei tarvitse nähdä*/
+.hidden {
+    display: none;
+}

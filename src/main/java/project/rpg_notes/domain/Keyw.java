@@ -6,8 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,20 +24,10 @@ public class Keyw {
 	@NotEmpty(message="What your keyword is?")
 	private String keywordName;
 	
-	@ManyToMany //source material: https://www.baeldung.com/jpa-many-to-many
-	@JoinTable(
-			name="npcKey",
-			joinColumns=@JoinColumn(name="keywordId"),
-			inverseJoinColumns=@JoinColumn(name="npcId")
-	)
+	@ManyToMany(mappedBy="keywords") //source material: https://www.baeldung.com/jpa-many-to-many
 	private List<Npc> npcs;
 	
-	@ManyToMany
-	@JoinTable(
-			name="placeKey",
-			joinColumns=@JoinColumn(name="keywordId"),
-			inverseJoinColumns=@JoinColumn(name="placeId")
-	)
+	@ManyToMany (mappedBy="keywords")
 	private List<Place> places;
 	
 	public Keyw() {

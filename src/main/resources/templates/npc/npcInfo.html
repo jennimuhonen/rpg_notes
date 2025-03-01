@@ -36,14 +36,17 @@
     		
     		<div style="clear: both; display: block; height: 10px;"></div>
     		
-    		<label>Tags:</label>
-    		
+    		<label>Keywords:</label>
+    		<div th:each="keyword : *{keywords}" class="note-item">
+    			<p class="note-text" th:text="${keyword.keywordName}"></p>   		
+    		</div>
     		
 		</div>
 		
 		<br>
 		<a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" class="btn btn-success">Edit basic info</a>
 		<a href="/note/addnote" class="btn btn-success">Add new Note</a>
+		<a th:href="@{/npc/addkeyword/{id}(id=${npc.npcId})}" class="btn btn-success">Edit keywords</a>
 		
 		<br><br>
 		<a href="npclist" class="btn btn-success">NPC list</a>

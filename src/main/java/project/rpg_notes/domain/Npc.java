@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -42,7 +43,12 @@ public class Npc {
 	private List<Note> notes;
 	
 	//Many Npcs many Keywords
-	@ManyToMany(mappedBy = "npcs")
+	@ManyToMany
+	@JoinTable(
+			name="npc_key",
+			joinColumns=@JoinColumn(name="npcId"),
+			inverseJoinColumns=@JoinColumn(name="keywordId")
+	)
 	private List<Keyw> keywords;
 	
 	public Npc() {	
@@ -67,6 +73,14 @@ public class Npc {
 		this.place = place;
 	}
 	
+	public Npc(long npcId, String npcName, String npcDescription, Place place, List<Keyw> keywords) {
+		this.npcId = npcId;
+		this.npcName = npcName;
+		this.npcDescription = npcDescription;
+		this.place = place;
+		this.keywords = keywords;
+	}
+
 	public Npc(String npcName, String npcDescription, Place place, List<Keyw> keywords) {
 		this.npcName = npcName;
 		this.npcDescription = npcDescription;
