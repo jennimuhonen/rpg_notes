@@ -30,8 +30,9 @@ public class NoteController {
 	}
 
 
-	//All about notes
-	//Notes can be added to npcs and places
+	//All about Notes
+	//Notes can be added to Npcs and Places
+	//There are also NPC / Place spesific add Notes under Npc / Place Controller
 	
 	//1. Add new Note
 	@GetMapping("/note/addnote")

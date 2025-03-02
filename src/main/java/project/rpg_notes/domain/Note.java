@@ -33,6 +33,14 @@ public class Note {
 	public Note() {
 		
 	}
+	
+	
+
+	public Note(String noteContent) {
+		this.noteContent = noteContent;
+	}
+
+
 
 	public Note(String noteContent, Npc npc) {
 		this.noteContent = noteContent;

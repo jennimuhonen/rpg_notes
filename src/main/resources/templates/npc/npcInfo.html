@@ -45,7 +45,7 @@
 		
 		<br>
 		<a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" class="btn btn-success">Edit basic info</a>
-		<a href="/note/addnote" class="btn btn-success">Add new Note</a>
+		<a th:href="@{/npc/addnpcnote/{id}(id=${npc.npcId})}" class="btn btn-success">Add new Note</a>
 		<a th:href="@{/npc/addkeyword/{id}(id=${npc.npcId})}" class="btn btn-success">Edit keywords</a>
 		
 		<br><br>

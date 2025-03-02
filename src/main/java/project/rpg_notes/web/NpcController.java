@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import project.rpg_notes.domain.Keyw;
 import project.rpg_notes.domain.KeywRepository;
+import project.rpg_notes.domain.Note;
+import project.rpg_notes.domain.NoteRepository;
 import project.rpg_notes.domain.Npc;
 import project.rpg_notes.domain.NpcRepository;
 import project.rpg_notes.domain.PlaceRepository;
@@ -25,12 +27,14 @@ public class NpcController {
 	private NpcRepository npcRepository;
 	private PlaceRepository placeRepository;
 	private KeywRepository keywordRepository;
+	private NoteRepository noteRepository;
 
 	public NpcController(NpcRepository npcRepository, PlaceRepository placeRepository,
-			KeywRepository keywordRepository) {
+			KeywRepository keywordRepository, NoteRepository noteRepository) {
 		this.npcRepository = npcRepository;
 		this.placeRepository = placeRepository;
 		this.keywordRepository = keywordRepository;
+		this.noteRepository = noteRepository;
 	}
 
 	// All about NPCs (NPC = non player character)
@@ -151,5 +155,36 @@ public class NpcController {
 
 	    return "redirect:/npc/" + npcId;
 	}
+	
+	// 10. Add new Note
+	@GetMapping(value="npc/addnpcnote/{id}")
+	public String addNpcNote(@PathVariable("id") Long npcId, Model model) {
+		System.out.println("Add new note to NPC");
+		Npc npc = npcRepository.findById(npcId).orElseThrow();
+		
+		Note note = new Note();
+		note.setNpc(npc);
+		//note.setPlace(null);
+		
+		model.addAttribute("note", note);
+		model.addAttribute("npc", npc);
+		return "npc/addNpcNote";
+	}
+	
+	// 11. Save Note
+	@PostMapping("/npc/savenpcnote")
+	public String saveNpcNote(@Valid @ModelAttribute("note") Note note, BindingResult bindingResult, Model model) {
+		if(bindingResult.hasErrors()) {
+			System.out.println("Adding note failed");
+			model.addAttribute("note", note);
+			return "npc/addNpcNote";
+		}
+		noteRepository.save(note);
+		System.out.println("New note saved: " + note);
+		Long id = note.getNpc().getNpcId();
+		return "redirect:/npc/"+id;
+	}
+	
+	// 12. Edit and Delete Note -> these are under NoteController
 	
 }
