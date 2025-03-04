@@ -10,7 +10,7 @@
 
 <body>
 	<h1>Edit NPC</h1>
-	<form action="#" th:action="@{/npc/saveeditednpc}" th:object="${editNpc}" method="post">	
+	<form action="#" th:action="@{/npc/saveeditednpc}" th:object="${npc}" method="post">	
 		<input type="hidden" th:field="*{npcId}" />
 		<div>
 			<label for="npcName">Name</label>
@@ -35,6 +35,7 @@
 			
 		</div>
 		<input class="btn btn-success" type="submit" value="Save" />
+		<a th:href="@{/npc/{id}(id=${npc.npcId})}" class="btn btn-success">Do not edit</a>
 
 	</form>
 

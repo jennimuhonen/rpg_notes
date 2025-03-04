@@ -62,7 +62,7 @@ public class NpcController {
 	@PostMapping("/npc/savenpc")
 	public String saveNpc(@Valid @ModelAttribute("npc") Npc npc, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("addNpc", npc);
+			model.addAttribute("npc", npc);
 			model.addAttribute("places", placeRepository.findAll());
 			System.out.println("Saving new NPC failed: " + npc);
 			return "npc/addNpc";
@@ -76,7 +76,8 @@ public class NpcController {
 	@GetMapping(value = "/npc/edit/{id}")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public String editNpc(@PathVariable("id") Long npcId, Model model) {
-		model.addAttribute("editNpc", npcRepository.findById(npcId));
+		Npc npc = npcRepository.findById(npcId).orElseThrow();
+		model.addAttribute("npc", npc);
 		model.addAttribute("places", placeRepository.findAll());
 		System.out.println("Ready to edit npcId " + npcId);
 		return "npc/editNpc";
@@ -85,9 +86,9 @@ public class NpcController {
 	// 5. Save edited NPC + error handling
 	@PostMapping("/npc/saveeditednpc")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public String saveEditedNpc(@Valid @ModelAttribute("editNpc") Npc npc, BindingResult bindingResult, Model model) {
+	public String saveEditedNpc(@Valid @ModelAttribute("npc") Npc npc, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("editNpc", npc);
+			model.addAttribute("npc", npc);
 			model.addAttribute("places", placeRepository.findAll());
 			System.out.println("Failed to edit NPC: " + npc);
 			return "npc/editNpc";
@@ -128,6 +129,7 @@ public class NpcController {
 	}
 	
 	// 9. Save Keyword
+	
 	/*@PostMapping("/npc/savekeyword")
 	public String saveKeywordsToNpc(@ModelAttribute("npc") Npc npc, Model model) {
 		System.out.println("Keyword tallennettu npc:lle");
@@ -181,6 +183,8 @@ public class NpcController {
 		if(bindingResult.hasErrors()) {
 			System.out.println("Adding note failed");
 			model.addAttribute("note", note);
+			Npc npc = note.getNpc();
+			model.addAttribute("npc", npc);
 			return "npc/addNpcNote";
 		}
 		noteRepository.save(note);
