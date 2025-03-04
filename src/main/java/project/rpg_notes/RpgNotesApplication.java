@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import project.rpg_notes.domain.AppUser;
+import project.rpg_notes.domain.AppUserRepository;
 import project.rpg_notes.domain.Keyw;
 import project.rpg_notes.domain.KeywRepository;
 import project.rpg_notes.domain.Note;
@@ -27,7 +29,7 @@ public class RpgNotesApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner rpgData(NpcRepository npcRepository, PlaceRepository pRepository, NoteRepository nRepository, KeywRepository kRepository) {
+	public CommandLineRunner rpgData(NpcRepository npcRepository, PlaceRepository pRepository, NoteRepository nRepository, KeywRepository kRepository, AppUserRepository auRepository) {
 		return (args) -> {
 			
 			System.out.println("Adding some keywords");
@@ -52,7 +54,7 @@ public class RpgNotesApplication {
 			List<Keyw> keywords = new ArrayList<>();
 			keywords.addAll(kRepository.findByKeywordName("Musta laiva"));
 			keywords.addAll(kRepository.findByKeywordName("Piraatti"));
-			System.out.println("Printataan lista keywords: "+keywords);
+			System.out.println("-- Print list of keywords: "+keywords+" --");
 						
 			System.out.println("Adding npcs");
 			npcRepository.save(new Npc("Ilkeä Piraatti", "Mustan laivan kapteeni", pRepository.findByPlaceName("Hurjaportti").get(0), keywords));
@@ -76,6 +78,12 @@ public class RpgNotesApplication {
 			}
 		
 			System.out.println("Tsekkaus: "+nRepository.findById(1L));
+			
+			System.out.println("Adding two users");
+			auRepository.save(new AppUser("user", "$2a$10$ch5N2B/5o6SWa848b5Z0i.YlP/eJ14Yms6MXVGjb1H/tM0dnQ02fu", "USER"));
+			auRepository.save(new AppUser("admin", "$2a$10$s1ahkW.MFc.1oCkcHt5Ku.3wdh7AxIE6C7reU2twpuTUbIm6F4C1q", "ADMIN"));
+			
+			
 		};
 		
 	}

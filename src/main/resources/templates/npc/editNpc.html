@@ -11,7 +11,7 @@
 <body>
 	<h1>Edit NPC</h1>
 	<form action="#" th:action="@{/npc/saveeditednpc}" th:object="${editNpc}" method="post">	
-		<input type="hidden" th:field="*{npcId}" class="form-control" />
+		<input type="hidden" th:field="*{npcId}" />
 		<div>
 			<label for="npcName">Name</label>
 			<input type="text" th:field="*{npcName}" class="styled-input" />

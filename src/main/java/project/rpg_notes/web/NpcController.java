@@ -3,6 +3,7 @@ package project.rpg_notes.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -73,6 +74,7 @@ public class NpcController {
 
 	// 4. Edit NPC
 	@GetMapping(value = "/npc/edit/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String editNpc(@PathVariable("id") Long npcId, Model model) {
 		model.addAttribute("editNpc", npcRepository.findById(npcId));
 		model.addAttribute("places", placeRepository.findAll());
@@ -82,6 +84,7 @@ public class NpcController {
 
 	// 5. Save edited NPC + error handling
 	@PostMapping("/npc/saveeditednpc")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String saveEditedNpc(@Valid @ModelAttribute("editNpc") Npc npc, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("editNpc", npc);
@@ -96,6 +99,7 @@ public class NpcController {
 
 	// 6. Delete NPC
 	@GetMapping(value = "/npc/delete/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String deleteNpc(@PathVariable("id") Long npcId) {
 		npcRepository.deleteById(npcId);
 		System.out.println("Deleted npcId " + npcId);
