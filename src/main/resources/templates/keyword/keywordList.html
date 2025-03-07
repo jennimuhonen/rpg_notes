@@ -22,10 +22,8 @@
 	<tr th:each="keyword : ${keyword}">
 		<td th:text="${keyword.keywordId}"></td>
 		<td> <a th:href="@{/keyword/{id}(id=${keyword.keywordId})}" th:text="${keyword.keywordName}" th:title="'More information about ' + ${keyword.keywordName}"></a></td>
-		<!--
 		<td><a th:href="@{/keyword/edit/{id}(id=${keyword.keywordId})}" class="btn btn-success">Edit</a></td>
-		<td><a th:href="@{/keyword/delete/{id}(id=${keyword.keywordId})}" onclick="return confirm('Are you sure you want to delete this NPC?');" class="btn btn-danger" >Delete</a></td>
-		-->
+		<td><a th:href="@{/keyword/delete/{id}(id=${keyword.keywordId})}" onclick="return confirm('Are you sure you want to delete this K?');" class="btn btn-danger" >Delete</a></td>
 	</tr>	
 </table>
 <br>

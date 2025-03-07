@@ -162,6 +162,8 @@ public class NpcController {
 	    return "redirect:/npc/" + npcId;
 	}
 	
+	//Add new keyword, edit and delete it are under KeywController
+	
 	// 10. Add new Note
 	@GetMapping(value="npc/addnpcnote/{id}")
 	public String addNpcNote(@PathVariable("id") Long npcId, Model model) {

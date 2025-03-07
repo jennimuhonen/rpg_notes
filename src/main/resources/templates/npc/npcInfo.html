@@ -9,7 +9,7 @@
 </head>
 
 <body>
-	<h1>Npc Information</h1>
+	<h1>Npc information</h1>
 
 		<div th:object="${npc}">
 
@@ -37,8 +37,8 @@
     		<div style="clear: both; display: block; height: 10px;"></div>
     		
     		<label>Keywords:</label>
-    		<div th:each="keyword : *{keywords}" class="note-item">
-    			<p class="note-text" th:text="${keyword.keywordName}"></p>   		
+    		<div th:each="keyword : *{keywords}" class="note-item">	
+    			<a th:href="@{/keyword/{id}(id=${keyword.keywordId})}" th:text="${keyword.keywordName}" class="note-text"></a>   		
     		</div>
     		
 		</div>

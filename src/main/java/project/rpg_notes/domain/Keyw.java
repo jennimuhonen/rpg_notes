@@ -20,7 +20,7 @@ public class Keyw {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long keywordId;
 	
-	@Size(min=1, max=250, message="Field is between 1-250 characters.")
+	@Size(min=1, max=30, message="Field is between 1-30 characters.")
 	@NotEmpty(message="What your keyword is?")
 	private String keywordName;
 	
