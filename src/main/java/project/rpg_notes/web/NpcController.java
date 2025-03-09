@@ -117,6 +117,8 @@ public class NpcController {
 		return "npc/npcInfo";
 	}
 	
+	//--- NPC + KEYWORDS ---
+	
 	// 8. Add Keyword to NPC
 	@GetMapping (value="/npc/addkeyword/{id}")
 	public String addKeywordToNpc(@PathVariable("id") Long npcId, Model model) {
@@ -164,6 +166,9 @@ public class NpcController {
 	
 	//Add new keyword, edit and delete it are under KeywController
 	
+	
+	//--- NPC + NOTES ---
+	
 	// 10. Add new Note
 	@GetMapping(value="npc/addnpcnote/{id}")
 	public String addNpcNote(@PathVariable("id") Long npcId, Model model) {
@@ -195,6 +200,6 @@ public class NpcController {
 		return "redirect:/npc/"+id;
 	}
 	
-	// 12. Edit and Delete Note -> these are under NoteController
+	//Edit and Delete Note are under NoteController
 	
 }

@@ -69,8 +69,7 @@ public class KeywController {
 		keywordList.addAll(keywordRepository.findByKeywordNameIgnoreCase(keywordName));
 		if (!keywordList.isEmpty()) {
 			System.out.println("Adding new keyword failed");
-			model.addAttribute("errorMessage", "Keyword already exists"); // Ratkaisu virheviestin lisäämiseksi saatu
-																			// ChatGPT:ltä
+			model.addAttribute("errorMessage", "Keyword already exists"); // Ratkaisu virheviestin lisäämiseksi saatu ChatGPT:ltä
 			model.addAttribute("keyword", keyword);
 			return "keyword/addKeyword";
 		}
@@ -158,5 +157,4 @@ public class KeywController {
 		model.addAttribute("keyword", keyword);
 		return "keyword/keywordInfo";
 	}
-
 }
