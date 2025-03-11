@@ -7,5 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface NpcRepository extends CrudRepository<Npc, Long> {
 	
 	List<Npc> findByNpcName(String npcName);
+	List<Npc> findByPlacePlaceName(String placeName);
 
 }

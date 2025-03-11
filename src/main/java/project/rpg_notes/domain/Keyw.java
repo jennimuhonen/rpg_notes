@@ -2,6 +2,8 @@ package project.rpg_notes.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,9 +26,11 @@ public class Keyw {
 	@NotEmpty(message="What your keyword is?")
 	private String keywordName;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy="keywords") //source material: https://www.baeldung.com/jpa-many-to-many
 	private List<Npc> npcs;
 	
+	@JsonIgnore
 	@ManyToMany (mappedBy="keywords")
 	private List<Place> places;
 	

@@ -54,6 +54,12 @@ public class Npc {
 	public Npc() {	
 	}
 	
+	//to make testing postman easier
+	public Npc(String npcName, String npcDescription) {
+		this.npcName = npcName;
+		this.npcDescription = npcDescription;
+	}
+
 	public Npc(String npcName, String npcDescription, Place place) {
 		this.npcName = npcName;
 		this.npcDescription = npcDescription;
