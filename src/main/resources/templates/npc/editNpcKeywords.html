@@ -3,14 +3,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Add keyword(s)</title>
+<title>Edit keyword(s)</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
 	<h1>Add keyword(s)</h1>
-	<form action="#" th:action="@{/npc/savekeyword}" th:object="${npc}" method="post">	
+	<form action="#" th:action="@{/npc/savekeywords}" th:object="${npc}" method="post">	
 		<input type="hidden" th:field="*{npcId}" />
 		<input type="hidden" th:field="*{npcName}" />
 		<input type="hidden" th:field="*{npcDescription}" />

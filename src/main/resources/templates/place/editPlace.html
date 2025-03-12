@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Edit Place</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Edit Place</h1>
+	<form action="#" th:action="@{/place/saveeditedplace}" th:object="${place}" method="post">
+		
+		<input type="hidden" th:field="*{placeId}" />
+		
+		<div>
+			<label for="placeName">Place</label>
+			<input type="text" th:field="*{placeName}" class="styled-input" />
+			
+			<div th:if="${#fields.hasErrors('placeName')}" class="error-message">
+				<span th:errors="*{placeName}">Error</span>
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<label for="placeDescription">Description</label>
+			<textarea th:field="*{placeDescription}" class="styled-input"></textarea>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+		</div>
+		
+		<input class="btn btn-success" type="submit" value="Save" />
+		<a th:href="@{/place/{id}(id=${place.placeId})}" class="btn btn-success">Do not edit</a>
+	
+	</form>
+
+</body>
+</html>

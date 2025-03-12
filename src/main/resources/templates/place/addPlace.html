@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Add Place</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Add place</h1>
+	
+	<form action="#" th:action="@{/place/saveplace}" th:object="${place}" method="post">
+		<div>
+			<label for="placeName">Place</label>
+			<input type="text" th:field="*{placeName}" class="styled-input" />
+			
+			<div th:if="${#fields.hasErrors('placeName')}" class="error-message">
+				<span th:errors="*{placeName}">Error</span>
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<label for="placeDescription">Description</label>
+			<textarea th:field="*{placeDescription}" class="styled-input"></textarea>
+			<div style="clear: both; display: block; height: 10px;"></div>
+		</div>
+		
+		<input type="submit" value="Save" class="btn btn-success" />
+		<a href=placelist class="btn btn-success">Do not save</a>
+	
+	</form>
+
+
+</body>
+
+</html>

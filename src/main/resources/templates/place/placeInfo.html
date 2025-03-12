@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Place Information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Place information</h1>
+	
+	<div th:object="${place}">
+	
+		<label>Place:</label>
+		<span th:text="*{placeName}"></span>
+		
+		<div style="clear: both; display: block; height: 10px;"></div>
+		
+		<label>Description:</label>
+    	<span th:text="*{placeDescription}"></span>
+    		
+    	<div style="clear: both; display: block; height: 10px;"></div>
+    	
+    	<label>Notes:</label>
+    	<div th:each="note : *{notes}" class="note-item">
+   			<p class="note-text" th:text="${note.noteContent}"></p>
+    		<a th:href="@{/note/edit/{id}(id=${note.noteId})}" class="small-button">Edit</a>
+		</div>
+    	
+    	<div style="clear: both; display: block; height: 10px;"></div>
+    		
+    	<label>Keywords:</label>
+    	<div th:each="keyword : *{keywords}" class="note-item">	
+    		<a th:href="@{/keyword/{id}(id=${keyword.keywordId})}" th:text="${keyword.keywordName}" class="note-text"></a>   		
+    	</div>
+    	
+	</div>
+	
+	<br>
+	<a th:href="@{/place/edit/{id}(id=${place.placeId})}" class="btn btn-success">Edit basic info</a>
+	<a th:href="@{/place/addplacenote/{id}(id=${place.placeId})}" class="btn btn-success">Add new Note</a>
+	<a th:href="@{/place/editkeywords/{id}(id=${place.placeId})}" class="btn btn-success">Edit keywords</a>
+		
+	<br><br>
+	<a href="placelist" class="btn btn-success">Place list</a>
+
+</body>
+
+</html>

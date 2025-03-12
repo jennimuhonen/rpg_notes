@@ -27,7 +27,7 @@
     		
     		<label>Places:</label>
     		<div th:each="place : *{places}" class="note-item">
-    			<a th:href="@{/npc/{id}(id=${npc.npcId})}" th:text="${place.placeName}" class="note-text"></a>   		
+    			<a th:href="@{/place/{id}(id=${place.placeId})}" th:text="${place.placeName}" class="note-text"></a>   		
     		</div>
     		
 		</div>

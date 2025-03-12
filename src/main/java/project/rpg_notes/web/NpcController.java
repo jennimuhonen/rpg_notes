@@ -119,9 +119,9 @@ public class NpcController {
 	
 	//--- NPC + KEYWORDS ---
 	
-	// 8. Add Keyword to NPC
-	@GetMapping (value="/npc/addkeyword/{id}")
-	public String addKeywordToNpc(@PathVariable("id") Long npcId, Model model) {
+	// 8. Edit Keywords that NPC has
+	@GetMapping (value="/npc/editkeywords/{id}")
+	public String editKeywordsForNpc(@PathVariable("id") Long npcId, Model model) {
 		Npc npc = npcRepository.findById(npcId).orElseThrow(); //ChatGPT:n ratkaisu kaatumisongelmaan, jonka paikkatieto html:ssä aiheutti.
 	    model.addAttribute("npc", npc);
 		model.addAttribute("places", placeRepository.findAll());
@@ -130,7 +130,7 @@ public class NpcController {
 		return "npc/editNpcKeywords";
 	}
 	
-	// 9. Save Keyword
+	// 9. Save Keywords
 	
 	/*@PostMapping("/npc/savekeyword")
 	public String saveKeywordsToNpc(@ModelAttribute("npc") Npc npc, Model model) {
@@ -143,7 +143,7 @@ public class NpcController {
 	//Alla oleva ChatGPT:n versio toimii, yllä oleva oma viritelmä ei.
 	//Jotta alla oleva toimi, piti Keywordien ja Npc:iden ManyToMany-suhde siirtää Npc:n puolelle hallinnoitavaksi.
 	//Palaa miettimään tätä ja yllä olevaa. :)
-	@PostMapping("/npc/savekeyword")
+	@PostMapping("/npc/savekeywords")
 	public String saveKeywordsToNpc(@RequestParam("npcId") Long npcId, 
 	                                @RequestParam("keywordId") List<Long> keywordIds) {
 	    System.out.println("Keyword tallennettu NPC:lle");
