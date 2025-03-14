@@ -37,9 +37,13 @@ public class NpcController {
 		this.keywordRepository = keywordRepository;
 		this.noteRepository = noteRepository;
 	}
+	
+	// Comments in Finnish are for myself to help remember what I have done and why.
+	// Also I have saved here some versions I got from ChatGPT for learning purposes.
 
+	
 	// All about NPCs (NPC = non player character)
-
+	
 	// 1. List NPCs
 	@GetMapping("/npc/npclist")
 	public String showNpcList(Model model) {
@@ -79,6 +83,7 @@ public class NpcController {
 		Npc npc = npcRepository.findById(npcId).orElseThrow();
 		model.addAttribute("npc", npc);
 		model.addAttribute("places", placeRepository.findAll());
+		model.addAttribute("keywords", keywordRepository.findAll());
 		System.out.println("Ready to edit npcId " + npcId);
 		return "npc/editNpc";
 	}
@@ -86,13 +91,25 @@ public class NpcController {
 	// 5. Save edited NPC + error handling
 	@PostMapping("/npc/saveeditednpc")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public String saveEditedNpc(@Valid @ModelAttribute("npc") Npc npc, BindingResult bindingResult, Model model) {
+	public String saveEditedNpc(@Valid @ModelAttribute("npc") Npc npc, @RequestParam(value="keywordId", required=false) List<Long> keywords, BindingResult bindingResult, Model model) {
+		
+		List<Keyw> selectedKeywords = new ArrayList<>();
+		Keyw keyword;
+		if (keywords!=null) {
+			for (int i = 0; i < keywords.size(); i++) {
+			keyword = keywordRepository.findById(keywords.get(i)).orElseThrow();
+			selectedKeywords.add(keyword);
+			}
+		}
+		npc.setKeywords(selectedKeywords);
+		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("npc", npc);
 			model.addAttribute("places", placeRepository.findAll());
 			System.out.println("Failed to edit NPC: " + npc);
 			return "npc/editNpc";
 		}
+		
 		npcRepository.save(npc);
 		System.out.println("Edited NPC saved: " + npc);
 		return "redirect:/npc/"+npc.getNpcId();
@@ -110,9 +127,9 @@ public class NpcController {
 	// 7. Get all NPC info
 	@GetMapping(value = "npc/{id}")
 	public String getNpcInfo(@PathVariable("id") Long npcId, Model model) {
-		npcRepository.findById(npcId).ifPresent(npc -> model.addAttribute("npc", npc)); //ChatGPT neuvoi muuttamaan tähän muotoon, että toimii.
-		//Npc npc = npcRepository.findById(npcId).orElse(null); //testilisäys
-		//System.out.println(npc.getKeywords());
+		//npcRepository.findById(npcId).ifPresent(npc -> model.addAttribute("npc", npc)); //ChatGPT:n antama ratkaisu, mutta yhdenmukaistettu muihin ratkaisuihin.
+		Npc npc = npcRepository.findById(npcId).orElseThrow();
+		model.addAttribute("npc", npc);
 		System.out.println("Get information about npc with id " + npcId);
 		return "npc/npcInfo";
 	}
@@ -132,18 +149,30 @@ public class NpcController {
 	
 	// 9. Save Keywords
 	
-	/*@PostMapping("/npc/savekeyword")
-	public String saveKeywordsToNpc(@ModelAttribute("npc") Npc npc, Model model) {
-		System.out.println("Keyword tallennettu npc:lle");
-		System.out.println("Testi:"+npcRepository.findByNpcName("Hiljainen Metsästäjä").get(0).getKeywords());
+	//Tehty ChatGPT:n ratkaisun (alla) pohjalta.
+	//Tässä käytetään @RequestParam, koska sen avulla voidaan lukea tietoa lomakkeelta. (Haaste liittyy ilmeisesti ManyToMany-suhteeseen ja siihen, kuinka se lomakkeelta luetaan.)
+	//Edelliseen jatkona: Lomake lähettää keywordId:n ei keywords-listaa. Jälkimmäinen tarvittaisiin, jotta @ModelAttribute:lla voitaisiin lukea suoraviivaisesti vain npc.
+	//KeywordId:lle on määritelty, ettei se ole pakollinen (required=false), koska muuten ohjelma kaatuu, jos käyttäjä ei valitse yhtään keywordia.
+	@PostMapping("npc/savekeywords")
+	public String SaveKeywordsToNpc(@RequestParam("npcId") Long npcId, @RequestParam(value="keywordId", required=false) List<Long> keywords) {
+		Npc npc = npcRepository.findById(npcId).orElseThrow();
+		List<Keyw> selectedKeywords = new ArrayList<>();
+		Keyw keyword;
+		if (keywords!=null) {
+			for (int i = 0; i < keywords.size(); i++) {
+				keyword = keywordRepository.findById(keywords.get(i)).orElseThrow();
+				selectedKeywords.add(keyword);
+			}
+		}
+		npc.setKeywords(selectedKeywords);
 		npcRepository.save(npc);
-		return "redirect:/npc/"+npc.getNpcId();
-	}*/
+		System.out.println("Seuraavat avainsanat tallennettu: " + npc.getKeywords());
+		return "redirect:/npc/" + npcId;
+	}
 	
-	//Alla oleva ChatGPT:n versio toimii, yllä oleva oma viritelmä ei.
+	//ChatGPT:n versio
 	//Jotta alla oleva toimi, piti Keywordien ja Npc:iden ManyToMany-suhde siirtää Npc:n puolelle hallinnoitavaksi.
-	//Palaa miettimään tätä ja yllä olevaa. :)
-	@PostMapping("/npc/savekeywords")
+	/*@PostMapping("/npc/savekeywords")
 	public String saveKeywordsToNpc(@RequestParam("npcId") Long npcId, 
 	                                @RequestParam("keywordId") List<Long> keywordIds) {
 	    System.out.println("Keyword tallennettu NPC:lle");
@@ -162,9 +191,10 @@ public class NpcController {
 	    }
 
 	    return "redirect:/npc/" + npcId;
-	}
+	}*/
 	
-	//Add new keyword, edit and delete it are under KeywController
+	
+	//+++ Add new keyword, edit and delete it are under KeywController +++
 	
 	
 	//--- NPC + NOTES ---
@@ -200,6 +230,6 @@ public class NpcController {
 		return "redirect:/npc/"+id;
 	}
 	
-	//Edit and Delete Note are under NoteController
+	//+++ Edit and Delete Note are under NoteController +++
 	
 }

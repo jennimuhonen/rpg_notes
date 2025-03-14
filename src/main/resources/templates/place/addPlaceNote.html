@@ -11,9 +11,9 @@
 <body>
 	<h1>Add Note</h1>
 	
-	<form action="#" th:action="@{/npc/savenpcnote}" th:object="${note}" method="post">
+	<form action="#" th:action="@{/place/saveplacenote}" th:object="${note}" method="post">
 	
-		<input type="hidden" th:field="*{npc.npcId}" />
+		<input type="hidden" th:field="*{place.placeId}" />
 		
 		<div>
 			<textarea th:field="*{noteContent}" class="styled-input"></textarea>
@@ -22,13 +22,14 @@
 			</div>
 			
 			<div style="clear: both; display: block; height: 10px;"></div>
-			
 		</div>
-		<input type="submit" value="Save" class="btn btn-success" />
-		<a th:href="@{/npc/{id}(id=${npc.npcId})}" onclick="return confirm('Are you sure you want to go back without saving?');" class="btn btn-success">Do not save</a>
-
+	
+ 		<input type="submit" value="Save" class="btn btn-success" />
+		<a th:href="@{/place/{id}(id=${place.placeId})}" onclick="return confirm('Are you sure you want to go back without saving?');" class="btn btn-success">Do not save</a>
+	
 	</form>
 
 </body>
+
 
 </html>

@@ -13,6 +13,12 @@
 	<form action="#" th:action="@{/npc/saveeditednpc}" th:object="${npc}" method="post">	
 		
 		<input type="hidden" th:field="*{npcId}" />
+		<div th:each="note : *{notes}" class="styled-input hidden">
+   				<p th:text="${note.noteContent}"></p>
+		</div>
+		<select name="keywordId" multiple="multiple" class="styled-input hidden" size="5">
+       			<option th:each="keyword: ${keywords}" th:value="${keyword.keywordId}" th:text="${keyword.keywordName}" th:selected="${npc.keywords.contains(keyword)}"></option>
+    	</select>
 		
 		<div>
 			<label for="npcName">Name</label>

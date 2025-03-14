@@ -13,6 +13,9 @@
 	<form action="#" th:action="@{/place/saveeditedplace}" th:object="${place}" method="post">
 		
 		<input type="hidden" th:field="*{placeId}" />
+		<select name="keywordId" multiple="multiple" class="styled-input hidden" size="5">
+       			<option th:each="keyword: ${keywords}" th:value="${keyword.keywordId}" th:text="${keyword.keywordName}" th:selected="${place.keywords.contains(keyword)}"></option>
+    	</select>
 		
 		<div>
 			<label for="placeName">Place</label>

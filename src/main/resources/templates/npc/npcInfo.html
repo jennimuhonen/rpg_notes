@@ -19,8 +19,13 @@
     		<div style="clear: both; display: block; height: 10px;"></div>
     
     		<label>Place:</label>
-   			<span th:text="*{place?.placeName}">(No Place)</span>
-    
+    		
+    		<div>
+    			<a th:if="*{place != null}" th:href="@{/place/{id}(id=*{place.placeId})}" th:text="*{place.placeName}"></a>
+    			<span th:unless="*{place != null}">(No Place)</span>
+			</div>
+    		
+    		
    			<div style="clear: both; display: block; height: 10px;"></div>
     
     		<label>Description:</label>
