@@ -21,10 +21,9 @@
 	</div>
 
 	
-	<table class="table table-striped">
+	<table class="table">
 		
 		<tr>
-			<th>Id</th>
 			<th>Name</th>
 			<th>Place</th>
 			<th>Description</th>
@@ -33,26 +32,27 @@
 		</tr>	
 		
 		<tr th:each="npc : ${npc}">
-			<td th:text="${npc.npcId}"></td>
 			<td> <a th:href="@{/npc/{id}(id=${npc.npcId})}" th:text="${npc.npcName}" th:title="'Get more information about ' + ${npc.npcName} + ' and add notes'"></a></td>
 			<!-- Ohjelma meni solmuun, jos paikan jätti tyhjäksi. -->
 			<!-- ChatGPT: Ongelma johtuu siitä, että kun NPC:llä ei ole valittua paikkaa, npc.place on null ja Thymeleaf yrittää silti lukea npc.place.placeName, mikä aiheuttaa virheen. -->
 			<!-- ChatGPT: Tämä [alla oleva viilattu koodi] varmistaa, että jos paikkaa ei ole valittu, solu on tyhjä eikä virhettä synny. -->
 			<td th:text="${npc.place != null ? npc.place.placeName : ''}"></td>
 			<td th:text="${npc.npcDescription}"></td>
-			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" class="btn btn-success">Edit</a></td>
-			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/npc/delete/{id}(id=${npc.npcId})}" onclick="return confirm('Are you sure you want to delete this NPC?');" class="btn btn-danger" >Delete</a></td>
+			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" class="btn">Edit</a></td>
+			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/npc/delete/{id}(id=${npc.npcId})}" onclick="return confirm('Are you sure you want to delete this NPC?');" class="btn" >Delete</a></td>
 		</tr>
 			
 	</table>
 	
-	<a href="/npc/addnpc" class="btn btn-success">Add new NPC</a>
+	<a href="/npc/addnpc" sec:authorize="hasAuthority('ADMIN')" class="btn">Add new NPC</a>
 	
-	<br><br>
-	-----
-	<br>
-	<a href="../../place/placelist">Place list</a>
-	<a href="../../keyword/keywordlist">Keyword list</a>
+	
+	<div class="footer-nav">
+		<a href="../">Home</a> |
+		<a href="../place/placelist">Place list</a> |
+		<a href="../keyword/keywordlist">Keyword list</a>	
+	</div>
+	
 	
 </body>
 </html>

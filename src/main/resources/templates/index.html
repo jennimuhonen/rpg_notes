@@ -1,11 +1,46 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<link rel="stylesheet" href="/css/styles.css"> 
+
 <head>
 <title>RPG Notes</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
+
 <body>
 	<h1>RPG Notes</h1>
+	
+	<div sec:authorize="isAuthenticated()">
+		<span>Logged in as "<span sec:authentication="name">Name</span>"</span>
+		&nbsp;
+		<form th:action="@{/logout}" method="post" style="display: inline;">
+			<input type="submit" value="Sign out" class="small-button" >
+		</form>
+	</div>
+	
+	<br sec:authorize="isAuthenticated()">
+	
+	<p th:if="${param.logout}" class="logout">You have been logged out.</p>
+	
+	<p>On this site you can check RPG Notes.</p>
+	<p>At the moment there is information about NPCs and places. There are also keywords that can be added to both.</p>
+	
+	<br sec:authorize="isAnonymous()">
+	<p sec:authorize="isAnonymous()">Log in to read the notes:</p>
+	
+	<a href="/login" sec:authorize="isAnonymous()" class="btn">Log in</a>
+	
+	<table sec:authorize="isAuthenticated()" class="table">
+	
+		<tr><th>Lists</th></tr>
+	
+		<tr><td><a href="npc/npclist">NPC list</a></td></tr>
+		<tr><td><a href="place/placelist">Place list</a></td></tr>
+		<tr><td><a href="keyword/keywordlist">Keyword list</a></td></tr>
+	
+	</table>
+	
 </body>
 </html>

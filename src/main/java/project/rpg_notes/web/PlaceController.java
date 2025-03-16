@@ -52,6 +52,7 @@ public class PlaceController {
 	
 	// 2. Add new Place
 	@GetMapping("/place/addplace")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String addPlace(Model model) {
 		System.out.println("Ready to add new Place.");
 		model.addAttribute("place", new Place());
@@ -60,6 +61,7 @@ public class PlaceController {
 	
 	// 3. Save new Place
 	@PostMapping("/place/saveplace")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String savePlace(@Valid @ModelAttribute("place") Place place, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("Saving new Place failed.");
@@ -130,6 +132,7 @@ public class PlaceController {
 	
 	// 8. Edit Keywords that Place has
 	@GetMapping(value="/place/editkeywords/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String editKeywordsForPlace(@PathVariable("id") Long placeId, Model model) {
 		System.out.println("Ready to edit Keywords");
 		Place place = placeRepository.findById(placeId).orElseThrow();
@@ -140,6 +143,7 @@ public class PlaceController {
 	
 	// 9. Save Keywords	
 	@PostMapping("/place/savekeywords")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String SaveKeywordsToPlace(@RequestParam("placeId") Long placeId, @RequestParam(value="keywordId", required=false) List<Long> keywords, Model model) {
 		Place place = placeRepository.findById(placeId).orElseThrow();
 		List<Keyw> selectedKeywords = new ArrayList<>();
@@ -164,6 +168,7 @@ public class PlaceController {
 	
 	// 10. Add new Note
 	@GetMapping(value="place/addplacenote/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String addPlaceNote(@PathVariable("id") Long PlaceId, Model model) {
 		System.out.println("Add new note to Place");
 		Place place = placeRepository.findById(PlaceId).orElseThrow();
@@ -176,6 +181,7 @@ public class PlaceController {
 	
 	// 11. Save Note
 	@PostMapping("/place/saveplacenote")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String savePlaceNote(@Valid @ModelAttribute("note") Note note, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding note failed");

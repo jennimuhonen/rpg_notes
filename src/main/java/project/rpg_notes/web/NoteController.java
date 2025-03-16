@@ -1,5 +1,6 @@
 package project.rpg_notes.web;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +37,7 @@ public class NoteController {
 	
 	//1. Add new Note
 	@GetMapping("/note/addnote")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String addNote(Model model) {
 		System.out.println("Add new note");
 		model.addAttribute("note", new Note());
@@ -46,6 +48,7 @@ public class NoteController {
 	
 	//2. Save new Note
 	@PostMapping("/note/savenote")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String saveNote(@Valid @ModelAttribute("note") Note note, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors()) {
 			System.out.println("Adding new note failed");
@@ -67,6 +70,7 @@ public class NoteController {
 	
 	//3. Edit Note
 	@GetMapping(value="note/edit/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String editNote(@PathVariable("id") Long noteId, Model model) {
 		System.out.println("Edit note");
 		model.addAttribute("note", noteRepository.findById(noteId).orElse(null)); //Sivulle lisätyn delete-nappulan kanssa oli ongelmia, ChatGPT kehotti lisäämään orElse(null), joka ratkaisi ongelman. 
@@ -78,6 +82,7 @@ public class NoteController {
 	
 	//4. Save edited Note
 	@PostMapping("/note/saveeditednote")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String saveEditedNote(@Valid @ModelAttribute("note") Note note, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors()) {
 			System.out.println("Failed to edit Note: "+ note);
@@ -99,6 +104,7 @@ public class NoteController {
 	
 	//5. Delete Note
 	@GetMapping(value="/note/delete/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String deleteNote(@PathVariable("id") Long noteId, Model model) {
 		Note note = noteRepository.findById(noteId).orElse(null);
 		Npc npc = note.getNpc();

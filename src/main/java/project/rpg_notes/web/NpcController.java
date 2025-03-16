@@ -55,6 +55,7 @@ public class NpcController {
 
 	// 2. Add new NPC
 	@GetMapping("/npc/addnpc")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String addNpc(Model model) {
 		System.out.println("You can now add NPC.");
 		model.addAttribute("npc", new Npc());
@@ -64,6 +65,7 @@ public class NpcController {
 
 	// 3. Save the new NPC + error handling
 	@PostMapping("/npc/savenpc")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String saveNpc(@Valid @ModelAttribute("npc") Npc npc, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("npc", npc);
@@ -138,6 +140,7 @@ public class NpcController {
 	
 	// 8. Edit Keywords that NPC has
 	@GetMapping (value="/npc/editkeywords/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String editKeywordsForNpc(@PathVariable("id") Long npcId, Model model) {
 		Npc npc = npcRepository.findById(npcId).orElseThrow(); //ChatGPT:n ratkaisu kaatumisongelmaan, jonka paikkatieto html:ssä aiheutti.
 	    model.addAttribute("npc", npc);
@@ -154,6 +157,7 @@ public class NpcController {
 	//Edelliseen jatkona: Lomake lähettää keywordId:n ei keywords-listaa. Jälkimmäinen tarvittaisiin, jotta @ModelAttribute:lla voitaisiin lukea suoraviivaisesti vain npc.
 	//KeywordId:lle on määritelty, ettei se ole pakollinen (required=false), koska muuten ohjelma kaatuu, jos käyttäjä ei valitse yhtään keywordia.
 	@PostMapping("npc/savekeywords")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String SaveKeywordsToNpc(@RequestParam("npcId") Long npcId, @RequestParam(value="keywordId", required=false) List<Long> keywords) {
 		Npc npc = npcRepository.findById(npcId).orElseThrow();
 		List<Keyw> selectedKeywords = new ArrayList<>();
@@ -201,6 +205,7 @@ public class NpcController {
 	
 	// 10. Add new Note
 	@GetMapping(value="npc/addnpcnote/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String addNpcNote(@PathVariable("id") Long npcId, Model model) {
 		System.out.println("Add new note to NPC");
 		Npc npc = npcRepository.findById(npcId).orElseThrow();
@@ -216,6 +221,7 @@ public class NpcController {
 	
 	// 11. Save Note
 	@PostMapping("/npc/savenpcnote")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String saveNpcNote(@Valid @ModelAttribute("note") Note note, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors()) {
 			System.out.println("Adding note failed");

@@ -3,6 +3,7 @@ package project.rpg_notes.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,6 +48,7 @@ public class KeywController {
 
 	// 2. Add new Keyword
 	@GetMapping("/keyword/addkeyword")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String addKeyword(Model model) {
 		System.out.println("Add new keyword");
 		model.addAttribute("keyword", new Keyw());
@@ -55,6 +57,7 @@ public class KeywController {
 
 	// 3. Save new Keyword
 	@PostMapping("keyword/savekeyword")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String saveKeyword(@Valid @ModelAttribute("keyword") Keyw keyword, BindingResult bindingResult,
 			Model model) {
 		if (bindingResult.hasErrors()) {
@@ -81,6 +84,7 @@ public class KeywController {
 
 	// 4. Edit Keyword
 	@GetMapping(value = "keyword/edit/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String editKeyword(@PathVariable("id") Long keywordId, Model model) {
 		System.out.println("Ready to edit keywordId " + keywordId);
 		Keyw keyword = keywordRepository.findById(keywordId).orElseThrow();
@@ -90,6 +94,7 @@ public class KeywController {
 
 	// 5. Save edited Keyword
 	@PostMapping("/keyword/saveeditedkeyword")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String saveEditedKeyword(@Valid @ModelAttribute("keyword") Keyw keyword, BindingResult bindingResult,
 			Model model) {
 		if (bindingResult.hasErrors()) {
@@ -116,6 +121,7 @@ public class KeywController {
 
 	// 6. Delete Keyword
 	@GetMapping(value = "/keyword/delete/{id}")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String deleteKeyword(@PathVariable("id") Long keywordId) {
 
 		Keyw keyword = keywordRepository.findById(keywordId).orElseThrow();

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 	<!-- <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" /> -->
 	<link rel="stylesheet" href="/css/styles.css"> 
 
@@ -12,31 +13,38 @@
 
 <body>
 	<h1>Keyword list</h1>
-	<table class="table table-striped">
+	
+	<div sec:authorize="isAuthenticated()">
+		<span>Logged in as "<span sec:authentication="name">Name</span>"</span>
+		&nbsp;
+		<form th:action="@{/logout}" method="post" style="display: inline;">
+			<input type="submit" value="Sign out" class="small-button" >
+		</form>
+	</div>
+	
+	<table class="table">
 	
 		<tr>
-			<th>Id</th>
 			<th>Keyword</th>
-			<th>Edit</th>
-			<th>Delete</th>
+			<th sec:authorize="hasAuthority('ADMIN')">Edit</th>
+			<th sec:authorize="hasAuthority('ADMIN')">Delete</th>
 		</tr>	
 	
 		<tr th:each="keyword : ${keyword}">
-			<td th:text="${keyword.keywordId}"></td>
 			<td> <a th:href="@{/keyword/{id}(id=${keyword.keywordId})}" th:text="${keyword.keywordName}" th:title="'More information about ' + ${keyword.keywordName}"></a></td>
-			<td><a th:href="@{/keyword/edit/{id}(id=${keyword.keywordId})}" class="btn btn-success">Edit</a></td>
-			<td><a th:href="@{/keyword/delete/{id}(id=${keyword.keywordId})}" onclick="return confirm('Are you sure you want to delete this K?');" class="btn btn-danger" >Delete</a></td>
+			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/keyword/edit/{id}(id=${keyword.keywordId})}" class="btn">Edit</a></td>
+			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/keyword/delete/{id}(id=${keyword.keywordId})}" onclick="return confirm('Are you sure you want to delete this Keyword? This will also delete this keyword from all the npcs and places it was added to.');" class="btn" >Delete</a></td>
 		</tr>	
 	
 	</table>
 
-	<a href="/keyword/addkeyword" class="btn btn-success">Add new Keyword</a>
-
-	<br><br>
-	-----
-	<br>
-	<a href="../../npc/npclist">NPC list</a>
-	<a href="../../place/placelist">Place list</a>
+	<a href="/keyword/addkeyword" sec:authorize="hasAuthority('ADMIN')" class="btn">Add new Keyword</a>
+	
+	<div class="footer-nav">
+		<a href="../">Home</a> |
+		<a href="../npc/npclist">NPC list</a> |
+		<a href="../place/placelist">Place list</a>	
+	</div>
 	
 </body>
 </html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head>
 <title>Npc Information</title>
@@ -49,12 +50,12 @@
 		</div>
 		
 		<br>
-		<a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" class="btn btn-success">Edit basic info</a>
-		<a th:href="@{/npc/addnpcnote/{id}(id=${npc.npcId})}" class="btn btn-success">Add new Note</a>
-		<a th:href="@{/npc/editkeywords/{id}(id=${npc.npcId})}" class="btn btn-success">Edit keywords</a>
+		<a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" sec:authorize="hasAuthority('ADMIN')" class="btn">Edit basic info</a>
+		<a th:href="@{/npc/addnpcnote/{id}(id=${npc.npcId})}" sec:authorize="hasAuthority('ADMIN')" class="btn">Add new Note</a>
+		<a th:href="@{/npc/editkeywords/{id}(id=${npc.npcId})}" sec:authorize="hasAuthority('ADMIN')" class="btn">Edit keywords</a>
 		
 		<br><br>
-		<a href="npclist" class="btn btn-success">NPC list</a>
+		<a href="npclist" class="btn">NPC list</a>
 		
 </body>
 

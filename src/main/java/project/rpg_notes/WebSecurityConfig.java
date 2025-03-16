@@ -28,7 +28,9 @@ public class WebSecurityConfig {
 	private static final AntPathRequestMatcher[] WHITE_LIST_URLS = {
 			new AntPathRequestMatcher("/api/npcs**"),
 			new AntPathRequestMatcher("/api/places**"),
-			new AntPathRequestMatcher("/h2-console/**")
+			new AntPathRequestMatcher("/h2-console/**"),
+			new AntPathRequestMatcher("/"),
+			new AntPathRequestMatcher("/index")
 	};
 	
 	@Bean
@@ -45,9 +47,11 @@ public class WebSecurityConfig {
 				.httpBasic(Customizer.withDefaults())  // Mahdollistaa Basic Authin Postmanissa (saatu ChatGPT:ltä)
 				.formLogin(formlogin ->
 					formlogin.loginPage("/login")
-					.defaultSuccessUrl("/npc/npclist", true) //vaihda tähän myöhemmin toinen sivu!
+					.defaultSuccessUrl("/", true)
 					.permitAll())
-				.logout(logout -> logout.permitAll())
+				.logout(logout -> logout
+						.logoutSuccessUrl("/?logout") //ChatGPT:n neuvosta lisäsin tämän, jotta ulos kirjautuessa päädytään etusivulle ja siellä on huomautus ulos kirjautumisesta.
+						.permitAll())
 				.csrf(csrf -> csrf.disable()); //tämä vain kehitystä varten, ei tuotantoon!
 		
 		return http.build();
