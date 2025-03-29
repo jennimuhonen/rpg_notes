@@ -32,19 +32,23 @@ public class RpgNotesApplication {
 	public CommandLineRunner rpgData(NpcRepository npcRepository, PlaceRepository pRepository, NoteRepository nRepository, KeywRepository kRepository, AppUserRepository auRepository) {
 		return (args) -> {
 			
-			System.out.println("Adding some keywords");
-			kRepository.save(new Keyw("Musta laiva"));
-			kRepository.save(new Keyw("Piraatti"));
-			kRepository.save(new Keyw("Epäilyttävä!"));
+			if(kRepository.count()==0) {
+				System.out.println("Adding some keywords");
+				kRepository.save(new Keyw("Musta laiva"));
+				kRepository.save(new Keyw("Piraatti"));
+				kRepository.save(new Keyw("Epäilyttävä!"));
+			}
 			
 			System.out.println("-- Print keywords --");
 			for (Keyw keyword : kRepository.findAll()) {
 				System.out.println(keyword.toString());
 			}
 			
-			System.out.println("Adding places to database");
-			pRepository.save(new Place("Hurjaportti", "Kahlerannikon siirtokunnan pääkaupunki.", kRepository.findByKeywordName("Epäilyttävä!")));
-			pRepository.save(new Place("Motaku", "Saariston suurin saari"));
+			if(pRepository.count()==0) {
+				System.out.println("Adding places to database");
+				pRepository.save(new Place("Hurjaportti", "Kahlerannikon siirtokunnan pääkaupunki.", kRepository.findByKeywordName("Epäilyttävä!")));
+				pRepository.save(new Place("Motaku", "Saariston suurin saari"));
+			}
 			
 			System.out.println("-- Print places --");
 			for (Place place : pRepository.findAll()) {
@@ -55,22 +59,26 @@ public class RpgNotesApplication {
 			keywords.addAll(kRepository.findByKeywordName("Musta laiva"));
 			keywords.addAll(kRepository.findByKeywordName("Piraatti"));
 			System.out.println("-- Print list of keywords: "+keywords+" --");
-						
-			System.out.println("Adding npcs");
-			npcRepository.save(new Npc("Ilkeä Piraatti", "Mustan laivan kapteeni", pRepository.findByPlaceName("Hurjaportti").get(0), keywords));
-			npcRepository.save(new Npc("Surkea Piraatti", "Mustan laivan perämies", pRepository.findByPlaceName("Hurjaportti").get(0), keywords));
-			npcRepository.save(new Npc("Hiljainen Metsästäjä", "Samoaa Chenoggin viidakossa", pRepository.findByPlaceName("Motaku").get(0), kRepository.findByKeywordName("Epäilyttävä!")));
-			npcRepository.save(new Npc("Onnellinen Kokki", "Sillisalaatti-tavernan kokki", pRepository.findByPlaceName("Motaku").get(0)));
+			
+			if(npcRepository.count()==0) {
+				System.out.println("Adding npcs");
+				npcRepository.save(new Npc("Ilkeä Piraatti", "Mustan laivan kapteeni", pRepository.findByPlaceName("Hurjaportti").get(0), keywords));
+				npcRepository.save(new Npc("Surkea Piraatti", "Mustan laivan perämies", pRepository.findByPlaceName("Hurjaportti").get(0), keywords));
+				npcRepository.save(new Npc("Hiljainen Metsästäjä", "Samoaa Chenoggin viidakossa", pRepository.findByPlaceName("Motaku").get(0), kRepository.findByKeywordName("Epäilyttävä!")));
+				npcRepository.save(new Npc("Onnellinen Kokki", "Sillisalaatti-tavernan kokki", pRepository.findByPlaceName("Motaku").get(0)));
+			}
 			
 			System.out.println("-- Print NPCs --");
 			for (Npc npc : npcRepository.findAll()) {
 				System.out.println(npc.toString());
 			}
 			
-			System.out.println("Adding few notes");
-			nRepository.save(new Note("Höppänä ja hieman ilkeä.", npcRepository.findByNpcName("Ilkeä Piraatti").get(0)));
-			nRepository.save(new Note("Ollut Mustan laivan kapteenina 27 vuotta.", npcRepository.findByNpcName("Ilkeä Piraatti").get(0)));
-			nRepository.save(new Note("Omistaa kissan nimeltään Musta.", npcRepository.findByNpcName("Ilkeä Piraatti").get(0)));
+			if(nRepository.count()==0) {
+				System.out.println("Adding few notes");
+				nRepository.save(new Note("Höppänä ja hieman ilkeä.", npcRepository.findByNpcName("Ilkeä Piraatti").get(0)));
+				nRepository.save(new Note("Ollut Mustan laivan kapteenina 27 vuotta.", npcRepository.findByNpcName("Ilkeä Piraatti").get(0)));
+				nRepository.save(new Note("Omistaa kissan nimeltään Musta.", npcRepository.findByNpcName("Ilkeä Piraatti").get(0)));
+			}
 			
 			System.out.println("-- Print Notes --");
 			for (Note note : nRepository.findAll()) {
@@ -79,10 +87,11 @@ public class RpgNotesApplication {
 		
 			System.out.println("Tsekkaus: "+nRepository.findById(1L));
 			
-			System.out.println("Adding two users");
-			auRepository.save(new AppUser("user", "$2a$10$ch5N2B/5o6SWa848b5Z0i.YlP/eJ14Yms6MXVGjb1H/tM0dnQ02fu", "USER"));
-			auRepository.save(new AppUser("admin", "$2a$10$s1ahkW.MFc.1oCkcHt5Ku.3wdh7AxIE6C7reU2twpuTUbIm6F4C1q", "ADMIN"));
-			
+			if(auRepository.count()==0) {
+				System.out.println("Adding two users");
+				auRepository.save(new AppUser("user", "$2a$10$ch5N2B/5o6SWa848b5Z0i.YlP/eJ14Yms6MXVGjb1H/tM0dnQ02fu", "USER"));
+				auRepository.save(new AppUser("admin", "$2a$10$s1ahkW.MFc.1oCkcHt5Ku.3wdh7AxIE6C7reU2twpuTUbIm6F4C1q", "ADMIN"));
+			}
 			
 		};
 		
