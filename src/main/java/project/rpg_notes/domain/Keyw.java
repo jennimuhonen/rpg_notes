@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table (name="Keyword")
+@Table (name="keyword")
 public class Keyw {
 	//Name of this class is Keyw because Keyword seemed to be problematic.
 	

@@ -93,13 +93,13 @@ public class NpcController {
 	// 5. Save edited NPC + error handling
 	@PostMapping("/npc/saveeditednpc")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public String saveEditedNpc(@Valid @ModelAttribute("npc") Npc npc, @RequestParam(value="keywordId", required=false) List<Long> keywords, BindingResult bindingResult, Model model) {
+	public String saveEditedNpc(@Valid @ModelAttribute("npc") Npc npc, @RequestParam(value="keywordId", required=false) List<Long> keywordIds, BindingResult bindingResult, Model model) {
 		
 		List<Keyw> selectedKeywords = new ArrayList<>();
 		Keyw keyword;
-		if (keywords!=null) {
-			for (int i = 0; i < keywords.size(); i++) {
-			keyword = keywordRepository.findById(keywords.get(i)).orElseThrow();
+		if (keywordIds!=null) {
+			for (int i = 0; i < keywordIds.size(); i++) {
+			keyword = keywordRepository.findById(keywordIds.get(i)).orElseThrow();
 			selectedKeywords.add(keyword);
 			}
 		}
@@ -158,13 +158,13 @@ public class NpcController {
 	//KeywordId:lle on määritelty, ettei se ole pakollinen (required=false), koska muuten ohjelma kaatuu, jos käyttäjä ei valitse yhtään keywordia.
 	@PostMapping("npc/savekeywords")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public String SaveKeywordsToNpc(@RequestParam("npcId") Long npcId, @RequestParam(value="keywordId", required=false) List<Long> keywords) {
+	public String SaveKeywordsToNpc(@RequestParam("npcId") Long npcId, @RequestParam(value="keywordId", required=false) List<Long> keywordIds) {
 		Npc npc = npcRepository.findById(npcId).orElseThrow();
 		List<Keyw> selectedKeywords = new ArrayList<>();
 		Keyw keyword;
-		if (keywords!=null) {
-			for (int i = 0; i < keywords.size(); i++) {
-				keyword = keywordRepository.findById(keywords.get(i)).orElseThrow();
+		if (keywordIds!=null) {
+			for (int i = 0; i < keywordIds.size(); i++) {
+				keyword = keywordRepository.findById(keywordIds.get(i)).orElseThrow();
 				selectedKeywords.add(keyword);
 			}
 		}
