@@ -29,8 +29,6 @@ public class WebSecurityConfig {
 			new AntPathRequestMatcher("/api/npcs**"),
 			new AntPathRequestMatcher("/api/places**"),
 			new AntPathRequestMatcher("/h2-console/**"),
-			new AntPathRequestMatcher("/"),
-			new AntPathRequestMatcher("/index")
 	};
 	
 	@Bean
@@ -40,6 +38,9 @@ public class WebSecurityConfig {
 				authorize -> authorize
 				.requestMatchers(antMatcher("/css/**")).permitAll()
 				.requestMatchers(WHITE_LIST_URLS).permitAll()
+				.requestMatchers(antMatcher("/signup")).permitAll()
+				.requestMatchers(antMatcher("/")).permitAll()
+				.requestMatchers(antMatcher("/index")).permitAll()
 				.anyRequest().authenticated())
 				.headers(headers ->
 				headers.frameOptions(frameOptions -> frameOptions

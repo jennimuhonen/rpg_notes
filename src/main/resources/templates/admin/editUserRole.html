@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Edit User Role</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Edit User Role</h1>
+	
+	<form th:action="@{/admin/saveediteduser}" th:object="${user}" method="post">
+		<input type="hidden" th:field="*{appUserId}" />
+		<input type="hidden" th:field="*{username}"/>
+		<input type="hidden" th:field="*{passwordHash}" />
+    
+    	<div>	
+    	
+			<label for="username">Username</label>
+			<span th:text="*{username}"></span>
+			<div style="clear: both; display: block; height: 10px;"></div>
+	
+			<label for="role">Role</label>
+			<input type="text" th:field="*{role}" class="styled-input" />
+			<div style="clear: both; display: block; height: 10px;"></div>	
+    
+    	</div>
+    	
+    <input class="btn" type="submit" value="Save" />
+	<a href="../userlist" class="btn">Do not save</a>
+	</form>
+
+</body>
+
+</html>

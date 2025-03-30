@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<link rel="stylesheet" href="/css/styles.css"> 
+
+<head>
+	<title>List of Users</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+	<h1>List of Users</h1>
+	
+	<div>
+		<span>Logged in as "<span sec:authentication="name">Name</span>"</span>
+		&nbsp;
+		<form th:action="@{/logout}" method="post" style="display: inline;">
+			<input type="submit" value="Sign out" class="small-button" >
+		</form>
+	</div>
+
+	
+	<table class="table">
+		
+		<tr>
+			<th>Name</th>
+			<th>Role</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>	
+		
+		<tr th:each="user : ${user}">
+			<td th:text="${user.username}"></td>
+			<td th:text="${user.role}"></td>
+			<td><a th:href="@{/admin/edit/{id}(id=${user.appUserId})}" class="btn">Edit</a></td>
+<td><a th:href="@{/admin/delete/{id}(id=${user.appUserId})}" onclick="return confirm('Are you sure you want to delete this User?');" class="btn" >Delete</a></td>
+		</tr>
+			
+	</table>
+	
+	<div class="footer-nav">
+		<a href="../">Home</a> |
+		<a href="../npc/npclist">Npc list</a> |
+		<a href="../place/placelist">Place list</a> |
+		<a href="../keyword/keywordlist">Keyword list</a>	
+	</div>
+	
+	
+</body>
+</html>

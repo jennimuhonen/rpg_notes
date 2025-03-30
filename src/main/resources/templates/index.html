@@ -42,5 +42,10 @@
 	
 	</table>
 	
+	<table sec:authorize="hasAuthority('ADMIN')" class="table">
+		<tr><th>For Admins</th></tr>
+		<tr><td><a href="admin/userlist">User list</a></td></tr>
+	</table>
+	
 </body>
 </html>

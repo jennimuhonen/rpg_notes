@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Sign up</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<div>
+		<h1>Sign up</h1>
+		<div>
+			<form th:object="${signupform}" th:action="@{/saveuser}" action="#" method="post">
+			
+				<div>
+					<label>Username:</label>
+					<input type="text" th:field="*{username}" class="styled-input" />
+					<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message">Username Error</p>			
+				</div>
+				<div style="clear: both; display: block; height: 10px;"></div>
+				
+				<div>
+					<label>Password:</label>
+					<input type="password" th:field="*{password}" class="styled-input" />
+					<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message">Password Error</p>			
+				</div>
+				<div style="clear: both; display: block; height: 10px;"></div>
+				
+				<div>
+					<label>Re-type Password:</label>
+					<input type="password" th:field="*{passwordCheck}" class="styled-input" />
+					<p th:if="${#fields.hasErrors('passwordCheck')}" th:errors="*{passwordCheck}" class="error-message">Password Match Error</p>			
+				</div>
+				<div style="clear: both; display: block; height: 10px;"></div>
+				
+				<input type="submit" class="btn" value="Sign up">
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>
