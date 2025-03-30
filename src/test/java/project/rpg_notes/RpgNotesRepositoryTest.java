@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import project.rpg_notes.domain.Keyw;
@@ -17,6 +18,7 @@ import project.rpg_notes.domain.Place;
 import project.rpg_notes.domain.PlaceRepository;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
 public class RpgNotesRepositoryTest {
 	
 	@Autowired
