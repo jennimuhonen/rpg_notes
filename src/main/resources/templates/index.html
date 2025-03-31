@@ -28,9 +28,10 @@
 	<p>At the moment there is information about NPCs and places. There are also keywords that can be added to both.</p>
 	
 	<br sec:authorize="isAnonymous()">
-	<p sec:authorize="isAnonymous()">Log in to read the notes:</p>
+	<p sec:authorize="isAnonymous()">Log in or sign up to read the notes:</p>
 	
 	<a href="/login" sec:authorize="isAnonymous()" class="btn">Log in</a>
+	<a href="/signup" sec:authorize="isAnonymous()" class="btn">Sign up</a>
 	
 	<table sec:authorize="isAuthenticated()" class="table">
 	

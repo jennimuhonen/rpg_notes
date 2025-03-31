@@ -39,32 +39,35 @@ public class UserController {
 	//Save user after sign up
 	@PostMapping("saveuser")
 	public String save(@Valid @ModelAttribute("signupform") SignUpForm signUpForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-		if(!bindingResult.hasErrors()) {
-			if(signUpForm.getPassword().equals(signUpForm.getPasswordCheck())) {
-				String pwd = signUpForm.getPassword();
-				BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
-				String hashPwd=bc.encode(pwd);
-				
-				AppUser newUser = new AppUser();
-				newUser.setPasswordHash(hashPwd);
-				newUser.setUsername(signUpForm.getUsername());
-				newUser.setRole("USER");
-				if(appUserRepository.findByUsername(signUpForm.getUsername())==null) {
-					appUserRepository.save(newUser);
-				}
-				else {
-					bindingResult.rejectValue("username", "err.username", "Username already exists");
-					return "signup";
-				}
-			}
-			else {
-				bindingResult.rejectValue("passwordCheck", "err.passCheck", "Password does not match");
-				return "signup";
-			}
-		}
-		else {
+		
+		//username is already in use
+		if (appUserRepository.findByUsername(signUpForm.getUsername())!=null) {
+			bindingResult.rejectValue("username", "err.username", "Username already exists");
 			return "signup";
 		}
+		
+		//passwords do not match
+		if (!signUpForm.getPassword().equals(signUpForm.getPasswordCheck())) {
+			bindingResult.rejectValue("passwordCheck", "err.passCheck", "Password does not match");
+			return "signup";
+		}
+		
+		//validation errors
+		if (bindingResult.hasErrors()) {
+			return "signup";
+		}
+		
+		String pwd = signUpForm.getPassword();
+		BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
+		String hashPwd=bc.encode(pwd);
+		
+		AppUser newUser = new AppUser();
+		newUser.setPasswordHash(hashPwd);
+		newUser.setUsername(signUpForm.getUsername());
+		newUser.setRole("USER");
+		
+		appUserRepository.save(newUser);
+		
 		redirectAttributes.addFlashAttribute("successMessage", "Account was created successfully! You can now log in."); //Ratkaisu saatu ChatGPT:ltä
 		return "redirect:/login";
 	}
@@ -98,7 +101,7 @@ public class UserController {
 		List<AppUser> adminList = new ArrayList<>();
 		adminList.addAll(appUserRepository.findByRole("ADMIN"));
 		
-		//For rahti just for safety
+		//For rahti just for safety -> DELETE LATER
 		if (user.getUsername().equals("admin")) {
 			redirectAttributes.addFlashAttribute("failureMessage", "Sorry, you are not allowed to edit admin. :)");
 			return "redirect:/admin/userlist";
@@ -118,11 +121,9 @@ public class UserController {
 		}	
 		
 		//if the role is not correct
-		else {
-			redirectAttributes.addFlashAttribute("failureMessage", "The role needs to be ADMIN or USER.");
-			Long id=user.getAppUserId();
-			return "redirect:/admin/edit/"+id;
-		}
+		redirectAttributes.addFlashAttribute("failureMessage", "The role needs to be ADMIN or USER.");
+		Long id=user.getAppUserId();
+		return "redirect:/admin/edit/"+id;
 	}
 	
 	//Delete user
@@ -132,7 +133,7 @@ public class UserController {
 		AppUser user = appUserRepository.findById(id).orElseThrow();
 		String role = user.getRole();
 		
-		//For rahti just for safety
+		//For rahti just for safety -> DELETE LATER
 		if (user.getUsername().equals("admin")) {
 			redirectAttributes.addFlashAttribute("failureMessage", "Sorry, you are not allowed to delete admin. :)");
 			return "redirect:/admin/userlist";

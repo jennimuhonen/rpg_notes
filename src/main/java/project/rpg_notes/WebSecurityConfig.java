@@ -39,6 +39,7 @@ public class WebSecurityConfig {
 				.requestMatchers(antMatcher("/css/**")).permitAll()
 				.requestMatchers(WHITE_LIST_URLS).permitAll()
 				.requestMatchers(antMatcher("/signup")).permitAll()
+				.requestMatchers(antMatcher("/saveuser")).permitAll()
 				.requestMatchers(antMatcher("/")).permitAll()
 				.requestMatchers(antMatcher("/index")).permitAll()
 				.anyRequest().authenticated())
