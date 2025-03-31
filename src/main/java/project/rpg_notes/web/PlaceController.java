@@ -70,7 +70,7 @@ public class PlaceController {
 		}
 		placeRepository.save(place);
 		System.out.println("New NPC saved: " + place);
-		return "redirect:/place/placelist";
+		return "redirect:/place/" + place.getPlaceId();
 	}
 	
 	// 4. Edit Place

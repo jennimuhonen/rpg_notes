@@ -75,7 +75,7 @@ public class NpcController {
 		}
 		npcRepository.save(npc);
 		System.out.println("New NPC saved: " + npc);
-		return "redirect:/npc/npclist";
+		return "redirect:/npc/"+npc.getNpcId();
 	}
 
 	// 4. Edit NPC
