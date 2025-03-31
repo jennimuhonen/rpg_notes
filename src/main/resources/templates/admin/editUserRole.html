@@ -11,6 +11,10 @@
 <body>
 	<h1>Edit User Role</h1>
 	
+	<div th:if="${failureMessage}" class="error-message">
+    		<p th:text="${failureMessage}"></p>
+	</div>
+	
 	<form th:action="@{/admin/saveediteduser}" th:object="${user}" method="post">
 		<input type="hidden" th:field="*{appUserId}" />
 		<input type="hidden" th:field="*{username}"/>
