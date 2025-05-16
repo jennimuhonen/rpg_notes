@@ -1,6 +1,7 @@
 package project.rpg_notes.web;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,27 +42,28 @@ public class PlaceController {
 
 	// All about Places
 	
-	// 1. List Places
+	// List Places
 	@GetMapping("/place/placelist")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String showPlaceList(Model model) {
 		System.out.println("List of Places");
 		model.addAttribute("place", placeRepository.findAll());
-		model.addAttribute("npc", npcRepository.findAll());
+		//model.addAttribute("npc", npcRepository.findAll());
 		return "place/placeList";
 	}
 	
-	// 2. Add new Place
+	// Add new Place
 	@GetMapping("/place/addplace")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String addPlace(Model model) {
 		System.out.println("Ready to add new Place.");
 		model.addAttribute("place", new Place());
 		return "place/addPlace";
 	}
 	
-	// 3. Save new Place
+	// Save new Place
 	@PostMapping("/place/saveplace")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String savePlace(@Valid @ModelAttribute("place") Place place, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("Saving new Place failed.");
@@ -73,9 +75,9 @@ public class PlaceController {
 		return "redirect:/place/" + place.getPlaceId();
 	}
 	
-	// 4. Edit Place
+	// Edit Place
 	@GetMapping(value="/place/edit/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String editPlace(@PathVariable("id") Long placeId, Model model) {
 		System.out.println("Ready to edit placeId " + placeId);
 		Place place = placeRepository.findById(placeId).orElseThrow();
@@ -84,9 +86,9 @@ public class PlaceController {
 		return "place/editPlace";
 	}
 	
-	// 5. Save edited Place
+	// Save edited Place
 	@PostMapping("/place/saveeditedplace")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String saveEditedPlace(@Valid @ModelAttribute("place") Place place, @RequestParam(value="keywordId", required=false) List<Long> keywords, BindingResult bindingResult, Model model) {
 		
 		List<Keyw> selectedKeywords = new ArrayList<>();
@@ -110,17 +112,18 @@ public class PlaceController {
 		return "redirect:/place/" + place.getPlaceId();
 	}
 	
-	// 6. Delete Place
+	// Delete Place
 	@GetMapping(value="place/delete/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String deletePlace(@PathVariable("id") Long placeId) {
 		placeRepository.deleteById(placeId);
 		System.out.println("Deleted placeId" + placeId);
 		return "redirect:/place/placelist";
 	}
 	
-	// 7. Get all Place info
+	// Get all Place info
 	@GetMapping(value="place/{id}")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String getPlaceInfo(@PathVariable("id") Long placeId, Model model) {
 		System.out.println("Get information about Place with id " + placeId);
 		Place place = placeRepository.findById(placeId).orElseThrow();
@@ -128,11 +131,30 @@ public class PlaceController {
 		return "place/placeInfo";
 	}
 	
+	// Order Places alphabetically
+	@GetMapping(value ="place/orderbyplace")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+	public String orderPlacesByPlace(Model model) {
+		System.out.println("Ordered list of Places");
+		
+		//Getting the list
+		Iterable<Place> placesIterable = placeRepository.findAll();
+		List<Place> places = new ArrayList<>();
+		placesIterable.forEach(places::add);
+			
+		//Ordering it alphabetically
+		places.sort(Comparator.comparing(place -> place.getPlaceName().toLowerCase()));
+		
+		model.addAttribute("place", places);
+		
+		return "place/placelist";
+	}
+	
 	//--- PLACE + KEYWORDS ---
 	
-	// 8. Edit Keywords that Place has
+	// Edit Keywords that Place has
 	@GetMapping(value="/place/editkeywords/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String editKeywordsForPlace(@PathVariable("id") Long placeId, Model model) {
 		System.out.println("Ready to edit Keywords");
 		Place place = placeRepository.findById(placeId).orElseThrow();
@@ -141,9 +163,9 @@ public class PlaceController {
 		return "place/editPlaceKeywords";
 	}
 	
-	// 9. Save Keywords	
+	// Save Keywords	
 	@PostMapping("/place/savekeywords")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String SaveKeywordsToPlace(@RequestParam("placeId") Long placeId, @RequestParam(value="keywordId", required=false) List<Long> keywords, Model model) {
 		Place place = placeRepository.findById(placeId).orElseThrow();
 		List<Keyw> selectedKeywords = new ArrayList<>();
@@ -166,9 +188,9 @@ public class PlaceController {
 	
 	//--- PLACE + NOTES ---
 	
-	// 10. Add new Note
+	// Add new Note
 	@GetMapping(value="place/addplacenote/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String addPlaceNote(@PathVariable("id") Long PlaceId, Model model) {
 		System.out.println("Add new note to Place");
 		Place place = placeRepository.findById(PlaceId).orElseThrow();
@@ -179,9 +201,9 @@ public class PlaceController {
 		return "place/addPlaceNote";
 	}
 	
-	// 11. Save Note
+	// Save Note
 	@PostMapping("/place/saveplacenote")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String savePlaceNote(@Valid @ModelAttribute("note") Note note, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("Adding note failed");

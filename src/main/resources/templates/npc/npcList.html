@@ -24,11 +24,11 @@
 	<table class="table">
 		
 		<tr>
-			<th>Name</th>
-			<th>Place</th>
+			<th>Name <a th:href="@{/npc/orderbynpc}" class="order-link">^^</a></th>
+			<th>Place <a th:href="@{/npc/orderbyplace}" class="order-link">^^</a></th>
 			<th>Description</th>
-			<th sec:authorize="hasAuthority('ADMIN')">Edit</th>
-			<th sec:authorize="hasAuthority('ADMIN')">Delete</th>
+			<th>Edit</th>
+			<th>Delete</th>
 		</tr>	
 		
 		<tr th:each="npc : ${npc}">
@@ -38,13 +38,13 @@
 			<!-- ChatGPT: Tämä [alla oleva viilattu koodi] varmistaa, että jos paikkaa ei ole valittu, solu on tyhjä eikä virhettä synny. -->
 			<td th:text="${npc.place != null ? npc.place.placeName : ''}"></td>
 			<td th:text="${npc.npcDescription}"></td>
-			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" class="btn">Edit</a></td>
-			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/npc/delete/{id}(id=${npc.npcId})}" onclick="return confirm('Are you sure you want to delete this NPC?');" class="btn" >Delete</a></td>
+			<td><a th:href="@{/npc/edit/{id}(id=${npc.npcId})}" class="btn">Edit</a></td>
+			<td><a th:href="@{/npc/delete/{id}(id=${npc.npcId})}" onclick="return confirm('Are you sure you want to delete this NPC?');" class="btn" >Delete</a></td>
 		</tr>
 			
 	</table>
 	
-	<a href="/npc/addnpc" sec:authorize="hasAuthority('ADMIN')" class="btn">Add new NPC</a>
+	<a href="/npc/addnpc" class="btn">Add new NPC</a>
 	
 	
 	<div class="footer-nav">

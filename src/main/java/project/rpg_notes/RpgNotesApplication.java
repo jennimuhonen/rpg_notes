@@ -91,6 +91,7 @@ public class RpgNotesApplication {
 				System.out.println("Adding two users");
 				auRepository.save(new AppUser("user", "$2a$10$ch5N2B/5o6SWa848b5Z0i.YlP/eJ14Yms6MXVGjb1H/tM0dnQ02fu", "USER"));
 				auRepository.save(new AppUser("admin", "$2a$10$s1ahkW.MFc.1oCkcHt5Ku.3wdh7AxIE6C7reU2twpuTUbIm6F4C1q", "ADMIN"));
+				auRepository.save(new AppUser("guest", "$2a$10$5CRnG4vY6dDZB6nCMDY7xedGqzlXW0TkAv71phg2eI0BRgPCWdyPK", "GUEST"));
 			}
 			
 		};

@@ -64,7 +64,7 @@ public class UserController {
 		AppUser newUser = new AppUser();
 		newUser.setPasswordHash(hashPwd);
 		newUser.setUsername(signUpForm.getUsername());
-		newUser.setRole("USER");
+		newUser.setRole("GUEST");
 		
 		appUserRepository.save(newUser);
 		
@@ -102,10 +102,10 @@ public class UserController {
 		adminList.addAll(appUserRepository.findByRole("ADMIN"));
 		
 		//For rahti just for safety -> DELETE LATER
-		if (user.getUsername().equals("admin")) {
+		/*if (user.getUsername().equals("admin")) {
 			redirectAttributes.addFlashAttribute("failureMessage", "Sorry, you are not allowed to edit admin. :)");
 			return "redirect:/admin/userlist";
-		}
+		}*/
 		
 		//Save if user is ADMIN || Save if user is USER and there are ADMINs left
 		if (role.equals("ADMIN") || role.equals("USER") && adminList.size()>1) {
@@ -134,10 +134,10 @@ public class UserController {
 		String role = user.getRole();
 		
 		//For rahti just for safety -> DELETE LATER
-		if (user.getUsername().equals("admin")) {
+		/*if (user.getUsername().equals("admin")) {
 			redirectAttributes.addFlashAttribute("failureMessage", "Sorry, you are not allowed to delete admin. :)");
 			return "redirect:/admin/userlist";
-		}
+		}*/
 		
 		//delete user if the role is USER
 		if (role.equals("USER")) {

@@ -1,6 +1,7 @@
 package project.rpg_notes.web;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,26 +39,27 @@ public class KeywController {
 	// It's Keyw because Keyword was problematic
 	// Keywords can be added to NPCs and Places
 
-	// 1. List of Keywords
+	// List of Keywords
 	@GetMapping("/keyword/keywordlist")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String showKeywordList(Model model) {
 		System.out.println("List of Keywords");
 		model.addAttribute("keyword", keywordRepository.findAll());
 		return "keyword/keywordList";
 	}
 
-	// 2. Add new Keyword
+	// Add new Keyword
 	@GetMapping("/keyword/addkeyword")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String addKeyword(Model model) {
 		System.out.println("Add new keyword");
 		model.addAttribute("keyword", new Keyw());
 		return "keyword/addKeyword";
 	}
 
-	// 3. Save new Keyword
+	// Save new Keyword
 	@PostMapping("keyword/savekeyword")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String saveKeyword(@Valid @ModelAttribute("keyword") Keyw keyword, BindingResult bindingResult,
 			Model model) {
 		if (bindingResult.hasErrors()) {
@@ -82,9 +84,9 @@ public class KeywController {
 		return "redirect:/keyword/keywordlist";
 	}
 
-	// 4. Edit Keyword
+	// Edit Keyword
 	@GetMapping(value = "keyword/edit/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String editKeyword(@PathVariable("id") Long keywordId, Model model) {
 		System.out.println("Ready to edit keywordId " + keywordId);
 		Keyw keyword = keywordRepository.findById(keywordId).orElseThrow();
@@ -92,9 +94,9 @@ public class KeywController {
 		return "keyword/editKeyword";
 	}
 
-	// 5. Save edited Keyword
+	// Save edited Keyword
 	@PostMapping("/keyword/saveeditedkeyword")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String saveEditedKeyword(@Valid @ModelAttribute("keyword") Keyw keyword, BindingResult bindingResult,
 			Model model) {
 		if (bindingResult.hasErrors()) {
@@ -119,9 +121,9 @@ public class KeywController {
 		return "redirect:/keyword/" + keyword.getKeywordId();
 	}
 
-	// 6. Delete Keyword
+	// Delete Keyword
 	@GetMapping(value = "/keyword/delete/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String deleteKeyword(@PathVariable("id") Long keywordId) {
 
 		Keyw keyword = keywordRepository.findById(keywordId).orElseThrow();
@@ -155,12 +157,32 @@ public class KeywController {
 		return "redirect:/keyword/keywordlist";
 	}
 
-	// 7. Get all Keyword info
+	// Get all Keyword info
 	@GetMapping(value = "keyword/{id}")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String getKeywordInfo(@PathVariable("id") long keywordId, Model model) {
 		System.out.println("Get information about keyword with id " + keywordId);
 		Keyw keyword = keywordRepository.findById(keywordId).orElseThrow();
 		model.addAttribute("keyword", keyword);
 		return "keyword/keywordInfo";
 	}
+	
+	// Order NPC's alphabetically by NPC
+	@GetMapping(value ="keyword/orderbykeyword")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+	public String orderKeywordsByKeyword(Model model) {
+		System.out.println("Ordered list of Keywords");
+		
+		Iterable<Keyw> keywordsIterable = keywordRepository.findAll();
+		List<Keyw> keywords = new ArrayList<>();
+		keywordsIterable.forEach(keywords::add);
+			
+				keywords.sort(Comparator.comparing(keyword -> keyword.getKeywordName().toLowerCase()));
+		
+		model.addAttribute("keyword", keywords);
+		
+		return "keyword/keywordlist";
+	}
+	
+	
 }

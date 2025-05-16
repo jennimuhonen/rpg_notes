@@ -25,15 +25,15 @@
 	<table class="table">
 	
 		<tr>
-			<th>Keyword</th>
-			<th sec:authorize="hasAuthority('ADMIN')">Edit</th>
-			<th sec:authorize="hasAuthority('ADMIN')">Delete</th>
+			<th>Keyword <a th:href="@{/keyword/orderbykeyword}" class="order-link">^^</a></th>
+			<th>Edit</th>
+			<th>Delete</th>
 		</tr>	
 	
 		<tr th:each="keyword : ${keyword}">
 			<td> <a th:href="@{/keyword/{id}(id=${keyword.keywordId})}" th:text="${keyword.keywordName}" th:title="'More information about ' + ${keyword.keywordName}"></a></td>
-			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/keyword/edit/{id}(id=${keyword.keywordId})}" class="btn">Edit</a></td>
-			<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/keyword/delete/{id}(id=${keyword.keywordId})}" onclick="return confirm('Are you sure you want to delete this Keyword? This will also delete this keyword from all the npcs and places it was added to.');" class="btn" >Delete</a></td>
+			<td><a th:href="@{/keyword/edit/{id}(id=${keyword.keywordId})}" class="btn">Edit</a></td>
+			<td><a th:href="@{/keyword/delete/{id}(id=${keyword.keywordId})}" onclick="return confirm('Are you sure you want to delete this Keyword? This will also delete this keyword from all the npcs and places it was added to.');" class="btn" >Delete</a></td>
 		</tr>	
 	
 	</table>

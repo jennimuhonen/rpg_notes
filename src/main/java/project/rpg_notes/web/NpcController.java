@@ -1,6 +1,7 @@
 package project.rpg_notes.web;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,14 +39,15 @@ public class NpcController {
 		this.noteRepository = noteRepository;
 	}
 	
-	// Comments in Finnish are for myself to help remember what I have done and why.
-	// Also I have saved here some versions I got from ChatGPT for learning purposes.
+	// Comments in Finnish are for myself to help remember what I have done and why or source information.
+	// Also I have saved in comments some versions I got from ChatGPT for learning purposes.
 
 	
 	// All about NPCs (NPC = non player character)
 	
-	// 1. List NPCs
+	// List NPCs
 	@GetMapping("/npc/npclist")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String showNpcList(Model model) {
 		System.out.println("List of NPCs");
 		model.addAttribute("npc", npcRepository.findAll());
@@ -53,9 +55,9 @@ public class NpcController {
 		return "npc/npcList";
 	}
 
-	// 2. Add new NPC
+	// Add new NPC
 	@GetMapping("/npc/addnpc")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String addNpc(Model model) {
 		System.out.println("You can now add NPC.");
 		model.addAttribute("npc", new Npc());
@@ -63,9 +65,9 @@ public class NpcController {
 		return "npc/addNpc";
 	}
 
-	// 3. Save the new NPC + error handling
+	// Save the new NPC + error handling
 	@PostMapping("/npc/savenpc")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String saveNpc(@Valid @ModelAttribute("npc") Npc npc, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("npc", npc);
@@ -78,9 +80,9 @@ public class NpcController {
 		return "redirect:/npc/"+npc.getNpcId();
 	}
 
-	// 4. Edit NPC
+	// Edit NPC
 	@GetMapping(value = "/npc/edit/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String editNpc(@PathVariable("id") Long npcId, Model model) {
 		Npc npc = npcRepository.findById(npcId).orElseThrow();
 		model.addAttribute("npc", npc);
@@ -90,9 +92,9 @@ public class NpcController {
 		return "npc/editNpc";
 	}
 
-	// 5. Save edited NPC + error handling
+	// Save edited NPC + error handling
 	@PostMapping("/npc/saveeditednpc")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String saveEditedNpc(@Valid @ModelAttribute("npc") Npc npc, @RequestParam(value="keywordId", required=false) List<Long> keywordIds, BindingResult bindingResult, Model model) {
 		
 		List<Keyw> selectedKeywords = new ArrayList<>();
@@ -117,17 +119,18 @@ public class NpcController {
 		return "redirect:/npc/"+npc.getNpcId();
 	}
 
-	// 6. Delete NPC
+	// Delete NPC
 	@GetMapping(value = "/npc/delete/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String deleteNpc(@PathVariable("id") Long npcId) {
 		npcRepository.deleteById(npcId);
 		System.out.println("Deleted npcId " + npcId);
 		return "redirect:/npc/npclist";
 	}
 	
-	// 7. Get all NPC info
+	// Get all NPC info
 	@GetMapping(value = "npc/{id}")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String getNpcInfo(@PathVariable("id") Long npcId, Model model) {
 		//npcRepository.findById(npcId).ifPresent(npc -> model.addAttribute("npc", npc)); //ChatGPT:n antama ratkaisu, mutta yhdenmukaistettu muihin ratkaisuihin.
 		Npc npc = npcRepository.findById(npcId).orElseThrow();
@@ -136,11 +139,50 @@ public class NpcController {
 		return "npc/npcInfo";
 	}
 	
+	// Order NPC's alphabetically by NPC
+	@GetMapping(value ="npc/orderbynpc")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+	public String orderNpcsByNpc(Model model) {
+		System.out.println("Ordered list of NPCs");
+		
+		//Getting the list
+		Iterable<Npc> npcsIterable = npcRepository.findAll(); //Muokattu ChatGPT:n avustuksella alla olevaa
+		List<Npc> npcs = new ArrayList<>();
+		npcsIterable.forEach(npcs::add);
+			
+		//Ordering it alphabetically
+		npcs.sort(Comparator.comparing(npc -> npc.getNpcName().toLowerCase()));
+		
+		model.addAttribute("npc", npcs);
+		model.addAttribute("places", placeRepository.findAll());
+		
+		return "npc/npclist";
+	}
+	
+	@GetMapping(value ="npc/orderbyplace")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+	public String orderNpcsByPlace(Model model) {
+		System.out.println("Ordered list of NPCs");
+		
+		Iterable<Npc> npcsIterable = npcRepository.findAll();
+		List<Npc> npcs = new ArrayList<>();
+		npcsIterable.forEach(npcs::add);
+		
+		//Muotoilu ChatGPT:n työtä. Huomioidaan myös se, jos arvo on null.
+		//(ehto) ? (jos tosi, tee tämä) : (jos epätosi, tee tämä)
+		npcs.sort(Comparator.comparing(npc -> npc.getPlace() != null ? npc.getPlace().getPlaceName().toLowerCase() : ""));
+		
+		model.addAttribute("npc", npcs);
+		model.addAttribute("places", placeRepository.findAll());
+		
+		return "npc/npclist";
+	}
+	
 	//--- NPC + KEYWORDS ---
 	
-	// 8. Edit Keywords that NPC has
+	// Edit Keywords that NPC has
 	@GetMapping (value="/npc/editkeywords/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String editKeywordsForNpc(@PathVariable("id") Long npcId, Model model) {
 		Npc npc = npcRepository.findById(npcId).orElseThrow(); //ChatGPT:n ratkaisu kaatumisongelmaan, jonka paikkatieto html:ssä aiheutti.
 	    model.addAttribute("npc", npc);
@@ -150,14 +192,14 @@ public class NpcController {
 		return "npc/editNpcKeywords";
 	}
 	
-	// 9. Save Keywords
+	// Save Keywords
 	
 	//Tehty ChatGPT:n ratkaisun (alla) pohjalta.
 	//Tässä käytetään @RequestParam, koska sen avulla voidaan lukea tietoa lomakkeelta. (Haaste liittyy ilmeisesti ManyToMany-suhteeseen ja siihen, kuinka se lomakkeelta luetaan.)
 	//Edelliseen jatkona: Lomake lähettää keywordId:n ei keywords-listaa. Jälkimmäinen tarvittaisiin, jotta @ModelAttribute:lla voitaisiin lukea suoraviivaisesti vain npc.
 	//KeywordId:lle on määritelty, ettei se ole pakollinen (required=false), koska muuten ohjelma kaatuu, jos käyttäjä ei valitse yhtään keywordia.
 	@PostMapping("npc/savekeywords")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String SaveKeywordsToNpc(@RequestParam("npcId") Long npcId, @RequestParam(value="keywordId", required=false) List<Long> keywordIds) {
 		Npc npc = npcRepository.findById(npcId).orElseThrow();
 		List<Keyw> selectedKeywords = new ArrayList<>();
@@ -203,9 +245,9 @@ public class NpcController {
 	
 	//--- NPC + NOTES ---
 	
-	// 10. Add new Note
+	// Add new Note
 	@GetMapping(value="npc/addnpcnote/{id}")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String addNpcNote(@PathVariable("id") Long npcId, Model model) {
 		System.out.println("Add new note to NPC");
 		Npc npc = npcRepository.findById(npcId).orElseThrow();
@@ -219,9 +261,9 @@ public class NpcController {
 		return "npc/addNpcNote";
 	}
 	
-	// 11. Save Note
+	// Save Note
 	@PostMapping("/npc/savenpcnote")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String saveNpcNote(@Valid @ModelAttribute("note") Note note, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors()) {
 			System.out.println("Adding note failed");

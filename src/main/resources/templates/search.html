@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<link rel="stylesheet" href="/css/styles.css"> 
+
+<head>
+	<title>Search</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+	<h1>Search</h1>
+	
+	<div sec:authorize="isAuthenticated()">
+		<span>Logged in as "<span sec:authentication="name">Name</span>"</span>
+		&nbsp;
+		<form th:action="@{/logout}" method="post" style="display: inline;">
+			<input type="submit" value="Sign out" class="small-button" >
+		</form>
+	</div>
+	
+	<div style="clear: both; display: block; height: 30px;"></div>	
+	
+	<label>Category</label>
+	<select class="styled-input">
+		<option>NPC</option>
+		<option>Place</option>
+		<option>Keyword</option>
+	</select>
+	
+	<div style="clear: both; display: block; height: 10px;"></div>
+	
+	<label>Search term</label>
+	<input type="text" id="searchterm" name="searchterm" class="styled-input" />
+	
+	<div style="clear: both; display: block; height: 10px;"></div>
+	
+	<a href="/makesearch" class="btn" >Search</a>
+	
+	<div style="clear: both; display: block; height: 30px;"></div>
+	
+	<label>Results</label>
+	
+	<table class="table table-striped">
+		
+		<tr>
+			<th>Name</th>
+		</tr>	
+		
+		<tr th:each="place : ${place}">
+			<td> <a th:href="@{/place/{id}(id=${place.placeId})}" th:text="${place.placeName}"></a></td>
+			<td th:text="${place.placeDescription}"></td>
+		</tr>
+			
+	</table>
+	
+</body>
+</html>

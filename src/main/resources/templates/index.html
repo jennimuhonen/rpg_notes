@@ -27,13 +27,18 @@
 	<p>On this site you can check RPG Notes.</p>
 	<p>At the moment there is information about NPCs and places. There are also keywords that can be added to both.</p>
 	
+	<br sec:authorize="hasAuthority('GUEST')">
+	<p sec:authorize="hasAuthority('GUEST')" class="note">Congratulations, you have created an account! Now you need to contact the admin to be allowed to see and edit content.</p>
+	<p sec:authorize="hasAuthority('GUEST')">If you don't know the admin, then you are not part of our group and won't get access. Sorry!</p>
+	
 	<br sec:authorize="isAnonymous()">
-	<p sec:authorize="isAnonymous()">Log in or sign up to read the notes:</p>
+	<p sec:authorize="isAnonymous()">This is a private project. You need to be part of our RPG group to be allowed to view any content.</p>
+	<p sec:authorize="isAnonymous()">If you are part of our group, log in or sign up to read the notes:</p>
 	
 	<a href="/login" sec:authorize="isAnonymous()" class="btn">Log in</a>
 	<a href="/signup" sec:authorize="isAnonymous()" class="btn">Sign up</a>
 	
-	<table sec:authorize="isAuthenticated()" class="table">
+	<table sec:authorize="hasAuthority('ADMIN') or hasAuthority('USER')" class="table">
 	
 		<tr><th>Lists</th></tr>
 	
