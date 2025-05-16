@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Edit keyword(s)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Edit keyword(s)</h1>
+	
+	<form action="#" th:action="@{/item/savekeywords}" th:object="${item}" method="post">
+	
+		<input type="hidden" th:field="*{itemId}" />
+		<input type="hidden" th:field="*{itemName}" />
+		<input type="hidden" th:field="*{itemDescription}" />
+		
+		<div>
+			<select name="keywordId" multiple="multiple" class="styled-input" size="5">
+       			<option th:each="keyword: ${keywords}" th:value="${keyword.keywordId}" th:text="${keyword.keywordName}" th:selected="${item.keywords.contains(keyword)}"></option>
+    		</select>
+    		
+			<div style="clear: both; display: block; height: 10px;"></div>
+		</div>
+	
+		<input class="btn" type="submit" value="Edit" />
+		<a th:href="@{/item/{id}(id=${item.itemId})}" class="btn">Do not edit</a>
+		
+		<br><br>
+		<a href="../../keyword/keywordlist" class="btn">Go to keyword list</a>
+	
+	</form>
+
+</body>
+
+</html>

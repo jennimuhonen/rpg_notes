@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 
 import project.rpg_notes.domain.AppUser;
 import project.rpg_notes.domain.AppUserRepository;
+import project.rpg_notes.domain.GameItem;
+import project.rpg_notes.domain.GameItemRepository;
 import project.rpg_notes.domain.Keyw;
 import project.rpg_notes.domain.KeywRepository;
 import project.rpg_notes.domain.Note;
@@ -29,7 +31,7 @@ public class RpgNotesApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner rpgData(NpcRepository npcRepository, PlaceRepository pRepository, NoteRepository nRepository, KeywRepository kRepository, AppUserRepository auRepository) {
+	public CommandLineRunner rpgData(NpcRepository npcRepository, PlaceRepository pRepository, GameItemRepository giRepository, NoteRepository nRepository, KeywRepository kRepository, AppUserRepository auRepository) {
 		return (args) -> {
 			
 			if(kRepository.count()==0) {
@@ -71,6 +73,12 @@ public class RpgNotesApplication {
 			System.out.println("-- Print NPCs --");
 			for (Npc npc : npcRepository.findAll()) {
 				System.out.println(npc.toString());
+			}
+			
+			if(giRepository.count()==0) {
+				System.out.println("Adding items to database");
+				giRepository.save(new GameItem("Mystinen kaulakoru", "Hohtaa pinkkinä"));
+				giRepository.save(new GameItem("Pikkiriikkinen kenkä", "Laulaa lauluja"));
 			}
 			
 			if(nRepository.count()==0) {

@@ -71,7 +71,7 @@ public class PlaceController {
 			return "place/addPlace";
 		}
 		placeRepository.save(place);
-		System.out.println("New NPC saved: " + place);
+		System.out.println("New Place saved: " + place);
 		return "redirect:/place/" + place.getPlaceId();
 	}
 	
@@ -152,7 +152,7 @@ public class PlaceController {
 	
 	//--- PLACE + KEYWORDS ---
 	
-	// Edit Keywords that Place has
+	// Edit Place's Keywords
 	@GetMapping(value="/place/editkeywords/{id}")
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 	public String editKeywordsForPlace(@PathVariable("id") Long placeId, Model model) {
@@ -191,9 +191,9 @@ public class PlaceController {
 	// Add new Note
 	@GetMapping(value="place/addplacenote/{id}")
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-	public String addPlaceNote(@PathVariable("id") Long PlaceId, Model model) {
+	public String addPlaceNote(@PathVariable("id") Long placeId, Model model) {
 		System.out.println("Add new note to Place");
-		Place place = placeRepository.findById(PlaceId).orElseThrow();
+		Place place = placeRepository.findById(placeId).orElseThrow();
 		Note note = new Note();
 		note.setPlace(place);
 		model.addAttribute("place", place);

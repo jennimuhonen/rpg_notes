@@ -4,11 +4,11 @@
 	 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <link rel="stylesheet" href="/css/styles.css"> 
 <head>
-<title>Place List</title>
+<title>Item List</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<h1>Place list</h1>
+	<h1>Item list</h1>
 	
 	<div sec:authorize="isAuthenticated()">
 		<span>Logged in as "<span sec:authentication="name">Name</span>"</span>
@@ -21,27 +21,28 @@
 	<table class="table table-striped">
 		
 		<tr>
-			<th>Place <a th:href="@{/place/orderbyplace}" class="order-link">^^</a></th>
+			<th>Item <a th:href="@{/item/orderbyitem}" class="order-link">^^</a></th>
 			<th>Description</th>
 			<th>Edit</th>
 			<th>Delete</th>
 		</tr>	
 		
-		<tr th:each="place : ${place}">
-			<td> <a th:href="@{/place/{id}(id=${place.placeId})}" th:text="${place.placeName}" th:title="'Get more information about ' + ${place.placeName} + ' and add notes'"></a></td>
-			<td th:text="${place.placeDescription}"></td>
-			<td><a th:href="@{/place/edit/{id}(id=${place.placeId})}" class="btn">Edit</a></td>
-			<td><a th:href="@{/place/delete/{id}(id=${place.placeId})}" onclick="return confirm('Are you sure you want to delete this Place?');" class="btn" >Delete</a></td>
+		<tr th:each="item : ${item}">
+			<td> <a th:href="@{/item/{id}(id=${item.itemId})}" th:text="${item.itemName}" th:title="'Get more information about ' + ${item.itemName} + ' and add notes'"></a></td>
+			<td th:text="${item.itemDescription}"></td>
+			<td><a th:href="@{/item/edit/{id}(id=${item.itemId})}" class="btn">Edit</a></td>
+			<td><a th:href="@{/item/delete/{id}(id=${item.itemId})}" onclick="return confirm('Are you sure you want to delete this Item?');" class="btn" >Delete</a></td>
 		</tr>
 			
 	</table>
 	
-	<a href="/place/addplace" class="btn" >Add new Place</a>
+	<a href="/item/additem" class="btn" >Add new Item</a>
 	
 	
 	<div class="footer-nav">
 		<a href="../">Home</a> |
 		<a href="../npc/npclist">NPC list</a> |
+		<a href="../place/placelist">Place list</a> |
 		<a href="../keyword/keywordlist">Keyword list</a>	
 	</div>
 

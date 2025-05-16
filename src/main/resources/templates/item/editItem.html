@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Edit Item</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Edit Item</h1>
+	<form action="#" th:action="@{/item/saveediteditem}" th:object="${item}" method="post">
+		
+		<input type="hidden" th:field="*{itemId}" />
+		<select name="keywordId" multiple="multiple" class="styled-input hidden" size="5">
+       			<option th:each="keyword: ${keywords}" th:value="${keyword.keywordId}" th:text="${keyword.keywordName}" th:selected="${item.keywords.contains(keyword)}"></option>
+    	</select>
+		
+		<div>
+			<label for="itemName">Item</label>
+			<input type="text" th:field="*{itemName}" class="styled-input" />
+			
+			<div th:if="${#fields.hasErrors('itemName')}" class="error-message">
+				<span th:errors="*{itemName}">Error</span>
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<label for="itemDescription">Description</label>
+			<textarea th:field="*{itemDescription}" class="styled-input"></textarea>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+		</div>
+		
+		<input class="btn" type="submit" value="Save" />
+		<a th:href="@{/item/{id}(id=${item.itemId})}" class="btn">Do not edit</a>
+	
+	</form>
+
+</body>
+</html>

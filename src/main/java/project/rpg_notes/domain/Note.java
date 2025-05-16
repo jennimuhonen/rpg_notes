@@ -29,6 +29,11 @@ public class Note {
 	@ManyToOne
 	@JoinColumn(name="placeId", nullable=true)
 	private Place place;
+	
+	//Many Notes, one Item
+	@ManyToOne
+	@JoinColumn(name="itemId", nullable=true)
+	private GameItem item;
 
 	public Note() {
 		
@@ -77,6 +82,30 @@ public class Note {
 		this.place = place;
 	}
 
+	public Note(long noteId, @NotEmpty(message = "An empty box is not a note.") String noteContent, Npc npc,
+			Place place, GameItem item) {
+		this.noteId = noteId;
+		this.noteContent = noteContent;
+		this.npc = npc;
+		this.place = place;
+		this.item = item;
+	}
+
+	public Note(long noteId, @NotEmpty(message = "An empty box is not a note.") String noteContent, GameItem item) {
+		super();
+		this.noteId = noteId;
+		this.noteContent = noteContent;
+		this.item = item;
+	}
+
+	public Note(@NotEmpty(message = "An empty box is not a note.") String noteContent, GameItem item) {
+		super();
+		this.noteContent = noteContent;
+		this.item = item;
+	}
+
+
+
 	public long getNoteId() {
 		return noteId;
 	}
@@ -109,9 +138,18 @@ public class Note {
 		this.place = place;
 	}
 
+	public GameItem getItem() {
+		return item;
+	}
+
+	public void setItem(GameItem item) {
+		this.item = item;
+	}
+
 	@Override
 	public String toString() {
-		return "Note [noteId=" + noteId + ", noteContent=" + noteContent + ", npc=" + npc + ", place=" + place + "]";
+		return "Note [noteId=" + noteId + ", noteContent=" + noteContent + ", npc=" + npc + ", place=" + place
+				+ ", item=" + item + "]";
 	}
 	
 	

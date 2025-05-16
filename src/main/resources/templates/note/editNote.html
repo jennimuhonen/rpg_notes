@@ -14,6 +14,8 @@
 		<input type="hidden" th:field="*{noteId}" class="form-control" />
 		<input type="hidden" th:field="*{npc}" class="form-control" />
 		<input type="hidden" th:field="*{place}" class="form-control" />
+		<input type="hidden" name="item.itemId" th:value="${note.item.itemId}" />
+		
 		<div>
 			<textarea th:field="*{noteContent}" class="styled-input"></textarea>
 			<div th:if="${#fields.hasErrors('noteContent')}" class="error-message">

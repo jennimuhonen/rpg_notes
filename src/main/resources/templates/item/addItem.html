@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Add Item</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Add item</h1>
+	
+	<form action="#" th:action="@{/item/saveitem}" th:object="${item}" method="post">
+		<div>
+			<label for="itemName">Item</label>
+			<input type="text" th:field="*{itemName}" class="styled-input" />
+			
+			<div th:if="${#fields.hasErrors('itemName')}" class="error-message">
+				<span th:errors="*{itemName}">Error</span>
+			</div>
+			
+			<div style="clear: both; display: block; height: 10px;"></div>
+			
+			<label for="itemDescription">Description</label>
+			<textarea th:field="*{itemDescription}" class="styled-input"></textarea>
+			<div style="clear: both; display: block; height: 10px;"></div>
+		</div>
+		
+		<input type="submit" value="Save" class="btn" />
+		<a href=itemlist class="btn">Do not save</a>
+	
+	</form>
+
+
+</body>
+
+</html>

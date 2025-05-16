@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.validation.Valid;
+import project.rpg_notes.domain.GameItem;
+import project.rpg_notes.domain.GameItemRepository;
 import project.rpg_notes.domain.Note;
 import project.rpg_notes.domain.NoteRepository;
 import project.rpg_notes.domain.Npc;
@@ -23,18 +25,20 @@ public class NoteController {
 	private NoteRepository noteRepository;
 	private NpcRepository npcRepository;
 	private PlaceRepository placeRepository;
-
-	public NoteController(NoteRepository noteRepository, NpcRepository npcRepository, PlaceRepository placeRepository) {
+	private GameItemRepository itemRepository; 
+	
+	public NoteController(NoteRepository noteRepository, NpcRepository npcRepository, PlaceRepository placeRepository,
+			GameItemRepository itemRepository) {
 		this.noteRepository = noteRepository;
 		this.npcRepository = npcRepository;
 		this.placeRepository = placeRepository;
+		this.itemRepository = itemRepository;
 	}
-
-
+	
 	//All about Notes
 	//Notes can be added to Npcs and Places
 	//There are also NPC / Place spesific add Notes under Npc / Place Controller
-	
+
 	//1. Add new Note
 	@GetMapping("/note/addnote")
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
@@ -76,6 +80,7 @@ public class NoteController {
 		model.addAttribute("note", noteRepository.findById(noteId).orElse(null)); //Sivulle lisätyn delete-nappulan kanssa oli ongelmia, ChatGPT kehotti lisäämään orElse(null), joka ratkaisi ongelman. 
 		model.addAttribute("places", placeRepository.findAll());
 		model.addAttribute("npcs", npcRepository.findAll());
+		model.addAttribute("items", itemRepository.findAll());
 		System.out.println("Open editpage of note: " + noteId);
 		return "note/editNote";
 	}
@@ -89,16 +94,21 @@ public class NoteController {
 			model.addAttribute("note", note);
 			model.addAttribute("places", placeRepository.findAll());
 			model.addAttribute("npcs", npcRepository.findAll());
+			model.addAttribute("items", itemRepository.findAll());
 			return "note/editNote";
 		}
 		System.out.println("Edited Note saved");
 		noteRepository.save(note);
-		if(note.getNpc()==null) {
+		if(note.getNpc()==null && note.getItem()==null) {
 			Long id=note.getPlace().getPlaceId();
 			return "redirect:/place/"+id;
-		} else {
+		} else if(note.getPlace()==null && note.getItem()==null) {
 			Long id=note.getNpc().getNpcId();
 			return "redirect:/npc/"+id;
+		} else {
+			Long id=note.getItem().getItemId();
+			return "redirect:/item/"+id;
+			
 		}
 	}
 	
@@ -109,14 +119,18 @@ public class NoteController {
 		Note note = noteRepository.findById(noteId).orElse(null);
 		Npc npc = note.getNpc();
 		Place place = note.getPlace();
+		GameItem item = note.getItem();
 		System.out.println("Delete note with id:" + noteId);
 		noteRepository.deleteById(noteId);
-		if(npc==null) {
+		if(npc==null && item==null) {
 			Long id=place.getPlaceId();
 			return "redirect:/place/"+id;
-		} else {
+		} else if(place==null && item==null) {
 			Long id=npc.getNpcId();
 			return "redirect:/npc/"+id;
+		} else {
+			Long id=item.getItemId();
+			return "redirect:/item/"+id;
 		}
 	}
 

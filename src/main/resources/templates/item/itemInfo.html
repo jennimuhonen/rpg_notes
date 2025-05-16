@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- Muotoilujen ja CSS:n luomisessa on käytetty apuna ChatGPT:tä -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+<title>Item Information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+	<h1>Item information</h1>
+	
+	<div th:object="${item}">
+	
+		<label>Item:</label>
+		<span th:text="*{itemName}"></span>
+		
+		<div style="clear: both; display: block; height: 10px;"></div>
+		
+		<label>Description:</label>
+    	<span th:text="*{itemDescription}"></span>
+    		
+    	<div style="clear: both; display: block; height: 10px;"></div>
+    	
+    	<label>Notes:</label>
+    	<div th:each="note : *{notes}" class="note-item">
+   			<p class="note-text" th:text="${note.noteContent}"></p>
+    		<a th:href="@{/note/edit/{id}(id=${note.noteId})}" class="small-button">Edit</a>
+		</div>
+    	
+    	<div style="clear: both; display: block; height: 10px;"></div>
+    		
+    	<label>Keywords:</label>
+    	<div th:each="keyword : *{keywords}" class="note-item">	
+    		<a th:href="@{/keyword/{id}(id=${keyword.keywordId})}" th:text="${keyword.keywordName}" class="note-text"></a>   		
+    	</div>
+    	
+	</div>
+	
+	<br>
+	<a th:href="@{/item/edit/{id}(id=${item.itemId})}" class="btn">Edit basic info</a>
+	<a th:href="@{/item/additemnote/{id}(id=${item.itemId})}" class="btn">Add new Note</a>
+	<a th:href="@{/item/editkeywords/{id}(id=${item.itemId})}" class="btn">Edit keywords</a>
+		
+	<br><br>
+	<a href="itemlist" class="btn">Item list</a>
+
+</body>
+
+</html>

@@ -34,6 +34,10 @@ public class Keyw {
 	@ManyToMany (mappedBy="keywords")
 	private List<Place> places;
 	
+	@JsonIgnore
+	@ManyToMany (mappedBy="keywords")
+	private List<GameItem> items;
+	
 	public Keyw() {
 		
 	}
